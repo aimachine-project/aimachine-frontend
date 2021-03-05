@@ -1,0 +1,20 @@
+name: Continuous Deployment for Development
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "aimachine-ui-web-production" #Must be unique in Heroku
+          heroku_email: "aga.k396@gmail.com"
+          healthcheck: "https://aimachine-ui-web-production.herokuapp.com/health"
+          delay: 5
+          rollbackonhealthcheckfailed: true
