@@ -1,4 +1,4 @@
-name: Continuous Deployment for Development
+name: Continuous Deployment for Production
 
 on:
   push:
