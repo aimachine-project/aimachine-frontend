@@ -11,5 +11,4 @@ function App() {
     </div>
   );
 }
-// i need some changes
 export default App;
