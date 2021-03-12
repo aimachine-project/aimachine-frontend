@@ -1,13 +1,12 @@
 import React from "react";
 import "./App.css";
 import Navbar from "../Navbar";
+import PageContent from "../PageContent";
 
 function App() {
   return (
     <div className="App flex flex-col lg:flex-row">
-      <div className="flex-auto">
-        <p>hello world!</p>
-      </div>
+      <PageContent />
       <Navbar />
     </div>
   );
