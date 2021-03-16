@@ -1,22 +1,18 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Game from "../pages/Game.js";
 import Home from "../pages/Home.js";
+import PageNotFound from "../pages/PageNotFound";
 
 function PageContent() {
   return (
-    <BrowserRouter>
-      <div className="flex-auto">
-        <Switch>
-          <Route path="/game">
-            <Game />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </div>
-    </BrowserRouter>
+    <div className="flex-auto">
+      <Switch>
+        <Route exact path="/game" component={Game} />
+        <Route exact path="/" component={Home} />
+        <Route component={PageNotFound} />
+      </Switch>
+    </div>
   );
 }
 

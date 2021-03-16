@@ -1,9 +1,15 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
 import App from "./index.js";
+import { shallow } from "enzyme";
 
-test("renders learn react link", () => {
-  render(<App />);
-  const linkElement = screen.getByText(/Game Name/i);
-  expect(linkElement).toBeInTheDocument();
+describe("Test App component", () => {
+  test("App contains PageContent", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find("PageContent")).toBeTruthy();
+  });
+
+  test("App contains Navbar", () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find("Navbar")).toBeTruthy();
+  });
 });
