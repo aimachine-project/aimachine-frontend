@@ -27,7 +27,7 @@ describe("Check proper content loading", () => {
     Game.mockImplementation(() => <div>GameMock</div>);
 
     render(
-      <MemoryRouter initialEntries={["/game"]}>
+      <MemoryRouter initialEntries={["/game/gameName"]}>
         <App />
       </MemoryRouter>
     );

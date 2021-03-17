@@ -1,11 +1,21 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import TicTacToe from "../games/TicTacToe/index.js";
 
-function Home() {
-  return (
+function Game() {
+  const { gameName } = useParams();
+
+  let content = (
     <div>
-      <p>this is where game will be!!!</p>
+      <h1>Error</h1>
+      <h2>Game &quot;{gameName}&quot; doesn&apos;t exist</h2>
     </div>
   );
+
+  if (gameName.toLowerCase() === "tictactoe") {
+    content = <TicTacToe />;
+  }
+  return content;
 }
 
-export default Home;
+export default Game;
