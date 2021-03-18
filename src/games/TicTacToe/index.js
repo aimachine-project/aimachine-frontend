@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
+import Board from "./components/Board";
+import "./TicTacToe.css";
 
 // TO DO: change to env variable
 const ENDPOINT = "http://127.0.0.1:5000";
 
-function TicTacToePage() {
+function TicTacToe() {
   const [gameId, setGameId] = useState("");
   const [clientId, setClientId] = useState("");
   const [currentPlayer, setCurrentPlayer] = useState("");
 
   useEffect(() => {
-    // const socket = socketIOClient(ENDPOINT);
     const socket = connectSocket();
     socket.on("game_id", (data) => {
       setGameId(data);
@@ -29,10 +30,13 @@ function TicTacToePage() {
   }, []);
 
   return (
-    <div>
-      <p>game id: {gameId}</p>
-      <p>client id: {clientId}</p>
-      <p>Is it your turn: {currentPlayer === clientId ? "yes" : "no"}</p>
+    <div className="flex flex-col lg:flex-row-reverse">
+      <div className="flex-auto lg:pt-5">
+        <p>game id: {gameId}</p>
+        <p>client id: {clientId}</p>
+        <p>Is it your turn: {currentPlayer === clientId ? "yes" : "no"}</p>
+      </div>
+      <Board />
     </div>
   );
 }
@@ -51,4 +55,4 @@ function connectSocket() {
   return socket;
 }
 
-export default TicTacToePage;
+export default TicTacToe;
