@@ -4,7 +4,7 @@ import Board from "./components/Board";
 import "./TicTacToe.css";
 
 // TO DO: change to env variable
-const ENDPOINT = "http://127.0.0.1:5000";
+const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
 
 class TicTacToe extends React.Component {
   constructor(props) {
