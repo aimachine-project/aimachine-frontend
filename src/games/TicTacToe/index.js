@@ -22,7 +22,7 @@ class TicTacToe extends React.Component {
   componentDidMount() {
     const socket = connectSocket((err, serverMessage) => {
       this.setState({ message: serverMessage });
-      console.log(err);
+      if (err) console.log(err);
     });
     this.setState({ currentSocket: socket });
 
@@ -51,7 +51,6 @@ class TicTacToe extends React.Component {
       this.state.currentPlayer !== this.state.clientId ||
       this.state.board[i]
     ) {
-      this.setState({ message: "You can't choose already marked field" });
       return;
     }
     const row = Math.floor(i / 3);
@@ -71,9 +70,15 @@ class TicTacToe extends React.Component {
   }
 
   render() {
-    return (
-      <div className="flex flex-col lg:flex-row-reverse">
-        <div className="flex-auto lg:pt-5">
+    let gameDetails;
+    if (
+      this.state.currentSocket == null ||
+      this.state.currentSocket.id === undefined
+    ) {
+      gameDetails = <h1>You cannot connect to the server</h1>;
+    } else {
+      gameDetails = (
+        <div>
           <p className="text-xl">{this.state.gameId}</p>
           <p>
             Is it your turn:{" "}
@@ -86,6 +91,12 @@ class TicTacToe extends React.Component {
             <p>{this.state.message}</p>
           </div>
         </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col lg:flex-row-reverse">
+        <div className="flex-auto lg:pt-5">{gameDetails}</div>
         <Board
           isCurrentPlayer={this.state.currentPlayer === this.state.clientId}
           board={this.state.board}
