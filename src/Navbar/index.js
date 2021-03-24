@@ -1,18 +1,49 @@
-import React from "react";
-import { BiHome, BiUser } from "react-icons/bi";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.scss";
+import { IconContext } from "react-icons";
+import * as BiIcons from "react-icons/bi";
 
 function Navbar() {
-  return (
-    <div className="p-2 bg-gray-300 flex flex-row justify-around lg:flex-col lg:justify-start">
-      <a href="/" className="p-3">
-        <BiHome className="text-5xl" aria-hidden="true" />
-        <p className="invisible lg:visible">Home</p>
-      </a>
-      <a href="/" className="p-3">
-        <BiUser className="text-5xl" aria-hidden="true" />
-        <p className="invisible lg:visible">Log In</p>
-      </a>
+  const [sidebar, setSidebar] = useState(false);
+
+  const showSidebar = () => setSidebar(!sidebar);
+
+  const renderSidebarData = (
+    <div>
+      <li key="home" className="nav-text">
+        <a href="/">
+          <BiIcons.BiHome />
+          <span className="ml-3">Home</span>
+        </a>
+      </li>
+      <li key="login" className="nav-text">
+        <a href="/">
+          <BiIcons.BiUser />
+          <span className="ml-3">Log In</span>
+        </a>
+      </li>
     </div>
+  );
+
+  return (
+    <>
+      <Link to="#" className="navbar-toggle open">
+        <BiIcons.BiMenu onClick={showSidebar} />
+      </Link>
+      <nav className={sidebar ? "navbar active" : "navbar"}>
+        <ul className="" onClick={showSidebar}>
+          <IconContext.Provider value={{ color: "#fff" }}>
+            <li className="navbar-toggle">
+              <Link to="#">
+                <BiIcons.BiX />
+              </Link>
+            </li>
+            {renderSidebarData}
+          </IconContext.Provider>
+        </ul>
+      </nav>
+    </>
   );
 }
 
