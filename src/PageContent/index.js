@@ -3,10 +3,12 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Game from "../pages/Game.js";
 import Home from "../pages/Home.js";
 import PageNotFound from "../pages/PageNotFound";
+import "./PageContent.scss";
 
 function PageContent() {
   return (
-    <div className="flex-auto">
+    // <div className="lg:ml-60 bg-red-500 h-screen">
+    <div className="page-content">
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/game">

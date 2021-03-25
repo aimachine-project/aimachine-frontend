@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Navbar.scss";
 import { IconContext } from "react-icons";
 import * as BiIcons from "react-icons/bi";
+import "./Navbar.scss";
 
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
@@ -27,7 +27,7 @@ function Navbar() {
   );
 
   return (
-    <>
+    <div>
       <Link to="#" className="navbar-toggle open">
         <BiIcons.BiMenu onClick={showSidebar} />
       </Link>
@@ -43,7 +43,7 @@ function Navbar() {
           </IconContext.Provider>
         </ul>
       </nav>
-    </>
+    </div>
   );
 }
 
