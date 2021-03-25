@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as BiIcons from "react-icons/bi";
 import "./Navbar.scss";
@@ -10,7 +10,7 @@ function Navbar() {
   const showSidebar = () => setSidebar(!sidebar);
 
   const renderSidebarData = (
-    <div>
+    <>
       <li key="home" className="nav-text">
         <a href="/">
           <BiIcons.BiHome />
@@ -23,25 +23,23 @@ function Navbar() {
           <span className="ml-3">Log In</span>
         </a>
       </li>
-    </div>
+    </>
   );
 
   return (
-    <div>
-      <Link to="#" className="navbar-toggle open">
+    <div className="nav">
+      <a href="#" className="navbar-toggle open">
         <BiIcons.BiMenu onClick={showSidebar} />
-      </Link>
+      </a>
       <nav className={sidebar ? "navbar active" : "navbar"}>
-        <ul className="" onClick={showSidebar}>
-          <IconContext.Provider value={{ color: "#fff" }}>
-            <li className="navbar-toggle">
-              <Link to="#">
-                <BiIcons.BiX />
-              </Link>
-            </li>
+        <IconContext.Provider value={{ color: "#fff" }}>
+          <a href="#" className="navbar-toggle">
+            <BiIcons.BiX onClick={showSidebar} />
+          </a>
+          <ul className="navbar-elements" onClick={showSidebar}>
             {renderSidebarData}
-          </IconContext.Provider>
-        </ul>
+          </ul>
+        </IconContext.Provider>
       </nav>
     </div>
   );
