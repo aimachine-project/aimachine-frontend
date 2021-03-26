@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Game from "../pages/Game.js";
+import Game from "../pages/Game";
 import Home from "../pages/Home";
 import PageNotFound from "../pages/PageNotFound";
 import "./style.scss";

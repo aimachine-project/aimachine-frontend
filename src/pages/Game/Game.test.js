@@ -1,7 +1,7 @@
 import React from "react";
 import ReactRouter from "react-router";
 import { shallow } from "enzyme";
-import Game from "./Game.js";
+import Game from "./index.js";
 
 describe("Check proper content loading", () => {
   test("Should render TicTacToe for url with params /tictactoe", () => {
