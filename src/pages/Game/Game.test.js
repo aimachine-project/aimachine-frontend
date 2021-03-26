@@ -20,8 +20,10 @@ describe("Check proper content loading", () => {
       .mockReturnValue({ gameName: "random" });
 
     const wrapper = shallow(<Game />);
-
-    expect(wrapper.contains("Error")).toBeTruthy();
+    console.log(wrapper.debug());
+    expect(
+      wrapper.contains("Game &quot;random&quot; doesn&#39;t exist")
+    ).toBeTruthy();
     expect(wrapper.find("TicTacToe").length).toBe(0);
   });
 });
