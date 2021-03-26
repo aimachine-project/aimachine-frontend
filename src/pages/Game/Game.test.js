@@ -1,4 +1,5 @@
 import React from "react";
+import { render, screen } from "@testing-library/react";
 import ReactRouter from "react-router";
 import { shallow } from "enzyme";
 import Game from "./index.js";
@@ -19,11 +20,7 @@ describe("Check proper content loading", () => {
       .spyOn(ReactRouter, "useParams")
       .mockReturnValue({ gameName: "random" });
 
-    const wrapper = shallow(<Game />);
-    console.log(wrapper.debug());
-    expect(
-      wrapper.contains("Game &quot;random&quot; doesn&#39;t exist")
-    ).toBeTruthy();
-    expect(wrapper.find("TicTacToe").length).toBe(0);
+    render(<Game />);
+    expect(screen.getByText("Error")).toBeInTheDocument();
   });
 });
