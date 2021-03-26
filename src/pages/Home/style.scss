@@ -1,0 +1,65 @@
+.content {
+  padding: 0.5rem;
+  @media (min-width: 1024px) {
+    display: flex;
+    padding: 1rem;
+  }
+}
+
+.main-content {
+  text-align: justify;
+
+  & p {
+    margin: 0;
+  }
+
+  & p > span {
+    font-size: 0.6em;
+  }
+
+  @media (min-width: 1024px) {
+    flex: 1;
+    text-align: center;
+    margin: 0 2em;
+  }
+}
+
+.side-info {
+  border: 2px dashed black;
+  background-color: mix(white, black, 95%);
+  padding: 1em;
+  margin: 2em 0;
+
+  @media (min-width: 1024px) {
+    flex-grow: 0;
+    flex-basis: 30vw;
+    margin: 0;
+  }
+}
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.card-button {
+  background-color: rgba(#060b26, 0.8);
+  border-radius: 1em;
+  display: inline-block;
+  color: white;
+  padding: 2em;
+  margin: 0, 5em;
+
+  &:hover {
+    background-color: rgba(#060b26, 1);
+  }
+}
+
+.card-title {
+  font-size: 2em;
+}
+
+.card-player-info {
+  font-size: small;
+}

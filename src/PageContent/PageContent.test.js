@@ -2,8 +2,8 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import App from "../App";
-import Home from "../pages/Home.js";
-import Game from "../pages/Game.js";
+import Home from "../pages/Home";
+import Game from "../pages/Game";
 import PageNotFound from "../pages/PageNotFound";
 
 jest.mock("../pages/Home");
