@@ -1,10 +1,11 @@
 import React from "react";
+import "../style.scss";
 
 function Field(props) {
   return (
     <button
       data-testid="field"
-      className=" border-2 border-gray-500 focus:outline-none font-bold text-7xl text-gray-100"
+      className="field border-2 border-gray-500 focus:outline-none"
       onClick={() => props.onClick()}
     >
       {props.value}

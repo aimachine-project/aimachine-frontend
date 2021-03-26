@@ -1,4 +1,7 @@
 .page-title {
   height: 2rem;
-  text-align: center;
+  text-align: right;
+  @media (min-width: 1024px) {
+    text-align: center;
+  }
 }

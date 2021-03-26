@@ -1,7 +1,7 @@
 import React from "react";
 import socketIOClient from "socket.io-client";
 import Board from "./components/Board";
-import "./TicTacToe.css";
+import "./style.scss";
 
 // TO DO: change to env variable
 const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
@@ -70,38 +70,54 @@ class TicTacToe extends React.Component {
   }
 
   render() {
-    let gameDetails;
-    if (
+    const socketConnected =
       this.state.currentSocket == null ||
-      this.state.currentSocket.id === undefined
-    ) {
-      gameDetails = <h1>You cannot connect to the server</h1>;
-    } else {
-      gameDetails = (
-        <div>
-          <p className="text-xl">{this.state.gameId}</p>
-          <p>
-            Is it your turn:{" "}
-            <strong>
-              {this.state.currentPlayer === this.state.clientId ? "yes" : "no"}
-            </strong>
-          </p>
-          <div>
-            <p className="underline">message from server</p>
-            <p>{this.state.message}</p>
-          </div>
-        </div>
-      );
-    }
+      this.state.currentSocket.id === undefined;
+    const isTurn = this.state.currentPlayer === this.state.clientId;
 
     return (
-      <div className="flex flex-col lg:flex-row-reverse">
-        <div className="flex-auto lg:pt-5">{gameDetails}</div>
+      <div className="page-wrapper flex flex-col lg:flex-row-reverse">
+        <Details
+          socketConnected={socketConnected}
+          gameId={this.state.gameId}
+          isTurn={isTurn}
+          message={this.state.message}
+        />
         <Board
           isCurrentPlayer={this.state.currentPlayer === this.state.clientId}
           board={this.state.board}
           chooseField={(i) => this.chooseField(i)}
         />
+      </div>
+    );
+  }
+}
+
+function Details(props) {
+  if (props.socketConnected) {
+    return (
+      <div className="details">
+        {/* TO DO: Fix styling so the alert is centered without a hack */}
+        <h1></h1>
+        <h1 className="details-error">
+          There has been an error while connecting to the server
+        </h1>
+        <h1></h1>
+      </div>
+    );
+  } else {
+    return (
+      <div className="details">
+        <h3 className="details-title">{props.gameId}</h3>
+        <div className="details-content">
+          <p>
+            Is it your turn: <strong>{props.isTurn ? "yes" : "no"}</strong>
+          </p>
+          <div className="details-message">
+            <p>message from server:</p>
+            <p> {props.message}</p>
+          </div>
+        </div>
       </div>
     );
   }
