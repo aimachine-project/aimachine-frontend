@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import App from "../App";
-import Home from "../pages/Home.js";
+import Home from "../pages/Home";
 import Game from "../pages/Game.js";
 import PageNotFound from "../pages/PageNotFound";
 

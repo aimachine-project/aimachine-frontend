@@ -1,9 +1,9 @@
 .page-content {
-  background-color: red;
-  height: 100%;
+  overflow: auto;
+  padding: 0.5rem;
 
   @media (min-width: 1024px) {
-    background-color: blue;
     flex-grow: 1;
+    padding: 1rem;
   }
 }
