@@ -1,10 +1,9 @@
 import React from "react";
-import socketIOClient from "socket.io-client";
 import Board from "./components/Board";
 import "./style.scss";
 
 // TO DO: change to env variable
-const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
+// const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
 
 class TicTacToe extends React.Component {
   constructor(props) {
@@ -25,25 +24,51 @@ class TicTacToe extends React.Component {
       if (err) console.log(err);
     });
     this.setState({ currentSocket: socket });
-
-    socket.on("game_id", (data) => {
-      this.setState({ gameId: data });
-    });
-    socket.on("client_id", (data) => {
-      this.setState({ clientId: data });
-    });
-    socket.on("field_to_be_marked", (data) => {
-      const index = data.rowIndex * 3 + data.colIndex;
-
-      // TO DO: should data.fieldToken be 1/-1 if the server message at the end is "X/O won"?
-      const token = data.fieldToken === 1 ? "x" : "o";
-      this.markField(index, token);
-    });
-
-    // TO DO: change "movement_allowed" to something more fitting
-    socket.on("movement_allowed", (data) => {
-      this.setState({ currentPlayer: data });
-    });
+    const client = this;
+    socket.onmessage = function (event) {
+      const json = JSON.parse(event.data);
+      switch (json.eventType) {
+        case "game_id": {
+          client.setState({ gameId: json.eventMessage });
+          console.log("game id: " + client.state.gameId);
+          break;
+        }
+        case "client_id": {
+          client.setState({ clientId: json.eventMessage });
+          console.log("player id: " + client.state.clientId);
+          break;
+        }
+        case "field_to_be_marked": {
+          const data = JSON.parse(json.eventMessage);
+          const rowIndex = data.rowIndex;
+          const colIndex = data.colIndex;
+          const fieldToken = data.fieldToken;
+          console.log(
+            "field to be marked (row, col, token): ",
+            rowIndex,
+            colIndex,
+            fieldToken
+          );
+          const index = data.rowIndex * 3 + data.colIndex;
+          // TO DO: should data.fieldToken be 1/-1 if the server message at the end is "X/O won"?
+          const token = data.fieldToken === 1 ? "x" : "o";
+          client.markField(index, token);
+          break;
+        }
+        case "movement_allowed": {
+          // TO DO: change "movement_allowed" to something more fitting
+          client.setState({ currentPlayer: json.eventMessage });
+          break;
+        }
+        case "server_message": {
+          console.log(json.eventMessage);
+          break;
+        }
+        default: {
+          console.log("message not handled: " + event.data);
+        }
+      }
+    };
   }
 
   chooseField(i) {
@@ -55,11 +80,16 @@ class TicTacToe extends React.Component {
     }
     const row = Math.floor(i / 3);
     const col = i % 3;
-    this.state.currentSocket.emit("field_clicked", {
-      gameId: this.state.gameId,
-      rowIndex: row,
-      colIndex: col,
-    });
+    this.state.currentSocket.send(
+      JSON.stringify({
+        eventType: "field_clicked",
+        eventMessage: {
+          gameId: this.state.gameId,
+          rowIndex: row,
+          colIndex: col,
+        },
+      })
+    );
   }
 
   markField(i, token) {
@@ -124,15 +154,13 @@ function Details(props) {
 }
 
 function connectSocket(cb) {
-  const socket = socketIOClient(ENDPOINT, {
-    transports: ["websocket"],
-  });
-  socket.on("connect", () => {
+  const protocol = location.protocol.replace("http", "ws");
+  const serverUrl = protocol + "//" + document.domain + ":8080/game/tictactoe";
+  const socket = new WebSocket(serverUrl);
+  socket.onopen = () => {
+    console.log("connected");
     cb(null, "Connected to server");
-  });
-  socket.on("server_message", (data) => {
-    cb(null, data);
-  });
+  };
 
   return socket;
 }
