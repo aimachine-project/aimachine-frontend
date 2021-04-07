@@ -1,0 +1,80 @@
+$toggle-size: 3rem;
+$background-color: #060b26;
+
+span {
+  margin-left: 0.5em;
+}
+
+.nav {
+  display: flex;
+}
+
+.navbar {
+  background-color: $background-color;
+  height: 100vh;
+  left: -100%;
+  position: fixed;
+  transition: 550ms;
+  width: 250px;
+
+  &.active {
+    left: 0;
+  }
+
+  @media (min-width: 1024px) {
+    flex-grow: 1;
+    position: initial;
+    width: 150px;
+  }
+}
+
+.navbar-elements {
+  padding-left: 0;
+  padding-top: $toggle-size;
+
+  @media (min-width: 1024px) {
+    padding-top: 0;
+  }
+}
+
+.nav-text {
+  height: 10vh;
+  a {
+    text-decoration: none;
+    color: #f5f5f5;
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 45px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: mix($background-color, white, 90%);
+    }
+    &:focus {
+      box-shadow: 0 0 0 4px white;
+    }
+
+    @media (min-width: 1024px) {
+      padding: 0 10px;
+    }
+  }
+}
+
+.navbar-toggle {
+  border-radius: 0 0 10% 0;
+  font-size: $toggle-size;
+  line-height: calc(#{$toggle-size} - 1rem);
+  padding: 0.7rem;
+  position: fixed;
+
+  &.open {
+    background-color: white;
+  }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}

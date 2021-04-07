@@ -1,0 +1,7 @@
+.page-content {
+  overflow: auto;
+
+  @media (min-width: 1024px) {
+    flex-grow: 1;
+  }
+}

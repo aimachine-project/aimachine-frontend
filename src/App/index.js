@@ -1,13 +1,13 @@
 import React from "react";
-import "./App.css";
 import Navbar from "../Navbar";
 import PageContent from "../PageContent";
+import "./App.scss";
 
 function App() {
   return (
-    <div className="App flex flex-col lg:flex-row">
-      <PageContent />
+    <div className="app">
       <Navbar />
+      <PageContent />
     </div>
   );
 }

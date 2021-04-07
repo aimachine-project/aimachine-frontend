@@ -1,0 +1,7 @@
+.app {
+  height: 100vh;
+  width: 100vw;
+  @media (min-width: 1024px) {
+    display: inline-flex;
+  }
+}
