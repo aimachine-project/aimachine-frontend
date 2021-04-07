@@ -25,31 +25,23 @@ class TicTacToe extends React.Component {
     });
     this.setState({ currentSocket: socket });
     const client = this;
-    socket.onmessage = function (event) {
+
+    socket.onmessage = (event) => {
       const json = JSON.parse(event.data);
       switch (json.eventType) {
         case "game_id": {
           client.setState({ gameId: json.eventMessage });
-          console.log("game id: " + client.state.gameId);
           break;
         }
         case "client_id": {
           client.setState({ clientId: json.eventMessage });
-          console.log("player id: " + client.state.clientId);
           break;
         }
         case "field_to_be_marked": {
           const data = JSON.parse(json.eventMessage);
           const rowIndex = data.rowIndex;
           const colIndex = data.colIndex;
-          const fieldToken = data.fieldToken;
-          console.log(
-            "field to be marked (row, col, token): ",
-            rowIndex,
-            colIndex,
-            fieldToken
-          );
-          const index = data.rowIndex * 3 + data.colIndex;
+          const index = rowIndex * 3 + colIndex;
           // TO DO: should data.fieldToken be 1/-1 if the server message at the end is "X/O won"?
           const token = data.fieldToken === 1 ? "x" : "o";
           client.markField(index, token);
@@ -61,7 +53,8 @@ class TicTacToe extends React.Component {
           break;
         }
         case "server_message": {
-          console.log(json.eventMessage);
+          // TO DO: rethink messages from server to avoid repetition
+          client.setState({ message: json.eventMessage });
           break;
         }
         default: {
@@ -102,7 +95,7 @@ class TicTacToe extends React.Component {
   render() {
     const socketConnected =
       this.state.currentSocket == null ||
-      this.state.currentSocket.id === undefined;
+      this.state.currentSocket.readyState === 0;
     const isTurn = this.state.currentPlayer === this.state.clientId;
 
     return (
@@ -158,7 +151,6 @@ function connectSocket(cb) {
   const serverUrl = protocol + "//" + document.domain + ":8080/game/tictactoe";
   const socket = new WebSocket(serverUrl);
   socket.onopen = () => {
-    console.log("connected");
     cb(null, "Connected to server");
   };
 
