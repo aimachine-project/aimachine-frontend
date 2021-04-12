@@ -147,7 +147,7 @@ function Details(props) {
 }
 
 function connectSocket(cb) {
-  const serverUrl = "wss://aimachine-backend.herokuapp.com:8080/game/tictactoe";
+  const serverUrl = "wss://aimachine-backend.herokuapp.com/game/tictactoe";
   const socket = new WebSocket(serverUrl);
   socket.onopen = () => {
     cb(null, "Connected to server");
