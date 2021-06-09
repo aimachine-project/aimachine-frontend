@@ -16,7 +16,8 @@ echo "yarn version: $(yarn -v)"
 
 COPY ./ /
 
-RUN echo ". ~/.profile \n\
+RUN echo "#!/bin/bash \n\
+. ~/.profile \n\
 yarn install \n\
 yarn start" > startup.sh
 
