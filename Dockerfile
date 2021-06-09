@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y && apt install -y wget xz-utils && \
 mkdir -p /usr/local/lib/nodejs && \
-wget -O - https://nodejs.org/dist/v14.17.0/node-v14.17.0-linux-x64.tar.xz | tar xJf - -C /usr/local/lib/nodejs && \
+wget -qO - https://nodejs.org/dist/v14.17.0/node-v14.17.0-linux-x64.tar.xz | tar xJf - -C /usr/local/lib/nodejs && \
 echo "export PATH=/usr/local/lib/nodejs/node-v14.17.0-linux-x64/bin:$PATH" >> ~/.profile && \
 . ~/.profile && \
 echo "node version: $(node -v)" && \
