@@ -147,8 +147,8 @@ function Details(props) {
 }
 
 function connectSocket(cb) {
-  const protocol = location.protocol.replace("http", "ws");
-  const serverUrl = protocol + "//backend/game/tictactoe";
+  const protocol = location.protocol.replace('http', 'ws');
+  const serverUrl = protocol + '//localhost:8080/game/tictactoe';
   const socket = new WebSocket(serverUrl);
   socket.onopen = () => {
     cb(null, "Connected to server");
