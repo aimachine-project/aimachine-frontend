@@ -95,3 +95,4 @@ jobs:
             echo -e "$AWS_KEY" > aws.pem
             chmod 400 aws.pem
             ssh -o "StrictHostKeyChecking no" -o "LogLevel ERROR" -i "aws.pem" $AWS_URL 'sh startup.sh'
+            echo "🦄"
