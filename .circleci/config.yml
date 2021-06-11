@@ -1,0 +1,36 @@
+version: 2.1
+
+workflows:
+  Build and Test:
+    jobs:
+      - Build
+      - Test:
+          requires:
+            - Build
+
+jobs:
+  Build:
+    docker:
+      - image: circleci/node:lts-fermium-browsers-legacy
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
+
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: yarn build
+
+  Test:
+    docker:
+      - image: circleci/node:lts-fermium-browsers-legacy
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
+
+    steps:
+      - checkout
+      - run:
+          name: Test
+          command: yarn test --watchAll=false
