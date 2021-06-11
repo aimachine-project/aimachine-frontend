@@ -8,6 +8,18 @@ workflows:
           requires:
             - Build
 
+  Deploy:
+    jobs:
+      - Trigger Deploy:
+          type: approval
+          filters:
+            branches:
+              only: /.*/
+
+      - Deploy to AWS:
+          requires:
+            - Trigger Deploy
+
 jobs:
   Build:
     docker:
@@ -18,11 +30,14 @@ jobs:
 
     steps:
       - checkout
+
+      - run:
+          name: Install dependencies
+          command: yarn install
+
       - run:
           name: Build
-          command: |
-            yarn install
-            yarn build
+          command: yarn build
 
   Test:
     docker:
@@ -33,6 +48,50 @@ jobs:
 
     steps:
       - checkout
+
+      - run:
+          name: Install dependencies
+          command: yarn install
+
       - run:
           name: Test
           command: yarn test --watchAll=false
+
+  Deploy to AWS:
+    docker:
+      - image: circleci/node:lts-fermium-browsers-legacy
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.2
+
+      - run:
+          name: Build and push Frontend Docker image
+          command: |
+            docker build -t $DOCKERHUB_LOGIN/aimachine-frontend .
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_LOGIN --password-stdin
+            docker push $DOCKERHUB_LOGIN/aimachine-frontend
+
+      - run:
+          name: Build and push Backend Docker image
+          command: |
+            source deployconfig
+            if [ -d aimachine-backend ]; then rm -rf aimachine-backend; fi
+            git clone --branch $BACKEND_BRANCH https://github.com/aimachine-project/aimachine-backend.git
+            cd aimachine-backend
+            git pull
+            sh gradlew bootJar
+            docker build -t $DOCKERHUB_LOGIN/aimachine-backend .
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_LOGIN --password-stdin
+            docker push $DOCKERHUB_LOGIN/aimachine-backend
+
+      - run:
+          name: Deploy to AWS
+          command: |
+            echo -e "$AWS_KEY" > aws.pem
+            chmod 400 aws.pem
+            ssh -o "StrictHostKeyChecking no" -o "LogLevel ERROR" -i "aws.pem" $AWS_URL 'sh startup.sh'
