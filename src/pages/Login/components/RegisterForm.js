@@ -4,7 +4,6 @@ import "../style.scss";
 function RegistrationForm() {
   const [user, setUser] = useState({ username: "", password: "" });
   const [doesPasswordMatch, setDoesPasswordMatch] = useState(true);
-  // const [test, setTest] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,10 +20,11 @@ function RegistrationForm() {
         if (response.ok) {
           response.json().then((json) => {
             console.log(json);
+            alert("user " + user.username + " was created");
             window.location.reload();
           });
         } else {
-          console.log("response is not ok");
+          console.log("response from server is not ok");
         }
       })
       .catch((error) => console.log(error));
@@ -70,11 +70,6 @@ function RegistrationForm() {
         </label>
         <input type="submit" value="Register" />
       </form>
-      <div>
-        <p>user: {user.username}</p>
-        <p>password: {user.password}</p>
-        {/* <p>test: {test}</p> */}
-      </div>
     </>
   );
 }
