@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Game from "../pages/Game";
 import Home from "../pages/Home";
+import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import "./style.scss";
 
@@ -14,6 +15,7 @@ function PageContent() {
           <Redirect to="/" />
         </Route>
         <Route path="/game/:gameName" component={Game} />
+        <Route exact path="/login" component={Login} />
         <Route component={PageNotFound} />
       </Switch>
     </div>

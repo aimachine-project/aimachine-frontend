@@ -18,7 +18,7 @@ function Navbar() {
         </a>
       </li>
       <li key="login" className="nav-text">
-        <a href="/">
+        <a href="/login">
           <BiIcons.BiUser />
           <span className="ml-3">Log In</span>
         </a>
