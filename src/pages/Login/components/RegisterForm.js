@@ -5,9 +5,10 @@ function RegistrationForm() {
   const [user, setUser] = useState({ username: "", password: "" });
   const [doesPasswordMatch, setDoesPasswordMatch] = useState(true);
 
+  const url = "http//" + document.domain + ":8080/api/register";
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("http://localhost:8080/api/register", {
+    fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
