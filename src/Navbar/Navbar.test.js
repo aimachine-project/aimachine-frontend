@@ -16,7 +16,7 @@ describe("Navbar testing", () => {
     const wrapper = shallow(<Navbar />);
     const link = wrapper.find("a").filterWhere((n) => n.contains("Log In"));
     expect(link.contains("Log In")).toBeTruthy();
-    expect(link.props().href).toBe("/");
+    expect(link.props().href).toBe("/login");
     expect(link.containsMatchingElement(<BiUser />)).toBeTruthy();
   });
 });
