@@ -38,10 +38,10 @@ function RegistrationForm(props) {
       user.password === "" ||
       repeatedPassword === ""
     ) {
-      props.setErrorMessage("puste");
+      props.setErrorMessage("fields can't be empty");
       setIsInputValid(false);
     } else if (doesPasswordMatch === false) {
-      props.setErrorMessage("hasło nie pasuje");
+      props.setErrorMessage("password does not match");
       setIsInputValid(false);
     } else {
       setIsInputValid(true);
@@ -51,6 +51,7 @@ function RegistrationForm(props) {
     setUser({ username: "", password: "" });
     setReapeatedPassword("");
     console.log(json);
+    props.setErrorMessage("");
     props.setServerMessage(
       "user " + user.username + " was created. \n You can now log in"
     );
