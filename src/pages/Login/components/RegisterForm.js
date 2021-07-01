@@ -1,70 +1,110 @@
 import React, { useState } from "react";
 import "../style.scss";
 
-function RegistrationForm() {
+function RegistrationForm(props) {
   const [user, setUser] = useState({ username: "", password: "" });
+  const [repeatedPassword, setReapeatedPassword] = useState("");
   const [doesPasswordMatch, setDoesPasswordMatch] = useState(true);
+  const [isInputValid, setIsInputValid] = useState(false);
 
   const url = "http://" + document.domain + ":8080/api/register";
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    validateInput();
+    if (isInputValid === false) return;
+
     fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: user.username,
-        password: user.password,
-      }),
+      body: JSON.stringify(user),
     })
       .then((response) => {
-        console.log("test");
         if (response.ok) {
           response.json().then((json) => {
-            console.log(json);
-            alert("user " + user.username + " was created");
-            window.location.reload();
+            onSuccesfullSubmit(json);
+            // window.location.reload();
           });
         } else {
-          console.log("response from server is not ok");
+          console.log("response from server was not 200");
         }
       })
       .catch((error) => console.log(error));
   };
 
+  const validateInput = () => {
+    if (
+      user.username === "" ||
+      user.password === "" ||
+      repeatedPassword === ""
+    ) {
+      props.setErrorMessage("puste");
+      setIsInputValid(false);
+    } else if (doesPasswordMatch === false) {
+      props.setErrorMessage("hasło nie pasuje");
+      setIsInputValid(false);
+    } else {
+      setIsInputValid(true);
+    }
+  };
+  const onSuccesfullSubmit = (json) => {
+    setUser({ username: "", password: "" });
+    setReapeatedPassword("");
+    console.log(json);
+    props.setServerMessage(
+      "user " + user.username + " was created. \n You can now log in"
+    );
+  };
+
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+
   const confirmPassword = (e) => {
     const value = e.target.value;
-    if (value === "" || value === user.password) {
+    setReapeatedPassword(value);
+
+    if (value === user.password) {
       setDoesPasswordMatch(true);
     } else {
       setDoesPasswordMatch(false);
     }
   };
 
-  const passwordAlert = doesPasswordMatch ? (
-    ""
-  ) : (
-    <>
-      <small>password does not match</small>
-    </>
-  );
+  const passwordAlert =
+    doesPasswordMatch || repeatedPassword === "" ? (
+      ""
+    ) : (
+      <>
+        <small>password does not match</small>
+      </>
+    );
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <label>
           username:
-          <input type="text" name="username" onChange={onChange} />
+          <input
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={onChange}
+          />
         </label>
         <label>
           password:
-          <input type="password" name="password" onChange={onChange} />
+          <input
+            type="password"
+            name="password"
+            value={user.password}
+            onChange={onChange}
+          />
         </label>
         <label>
           confirm password:
           <input
             type="password"
-            name="confirmPassword"
+            name="repeatedPassword"
+            value={repeatedPassword}
             onChange={confirmPassword}
           />
           {passwordAlert}
