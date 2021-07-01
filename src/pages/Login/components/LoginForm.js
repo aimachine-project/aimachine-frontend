@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import { Redirect } from "react-router-dom";
 import "../style.scss";
 
 function LoginForm(props) {
@@ -46,6 +47,7 @@ function LoginForm(props) {
     console.log(json);
     props.setErrorMessage("");
     props.setServerMessage("user " + user.username + " was logged in.");
+    props.setRedirect(true);
   };
 
   return (
