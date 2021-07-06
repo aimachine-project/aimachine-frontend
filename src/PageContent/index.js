@@ -7,7 +7,7 @@ import Account from "../pages/Account";
 import PageNotFound from "../pages/PageNotFound";
 import "./style.scss";
 
-function PageContent() {
+function PageContent(props) {
   return (
     <div className="page-content">
       <Switch>

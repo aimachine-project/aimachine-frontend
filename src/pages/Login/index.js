@@ -4,7 +4,7 @@ import "./style.scss";
 import LoginForm from "./components/LoginForm";
 import RegistrationForm from "./components/RegisterForm";
 
-function Login() {
+function Login(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const [serverMessage, setServerMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -29,7 +29,7 @@ function Login() {
       .catch((error) => console.log(error));
   };
 
-  if (redirect) {
+  if (redirect && true === false) {
     return <Redirect to="/account" />;
   }
   return (
