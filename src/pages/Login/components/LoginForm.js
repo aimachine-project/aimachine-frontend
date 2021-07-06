@@ -20,13 +20,12 @@ function LoginForm(props) {
       headers: {
         Authorization: "Basic " + btoa(user.username + ":" + user.password),
       },
-      // credentials: "include",
+      credentials: "include",
     })
       .then((response) => {
         if (response.ok) {
           response.json().then((json) => {
             onSuccesfullSubmit(json);
-            // window.location.reload();
           });
         } else {
           console.log("response from server was not 200");
