@@ -26,9 +26,12 @@ function User(props) {
   let content = "";
   if (isLoggedIn) {
     content = (
-      <span className="nav-element-content" href="/account">
+      <span className="nav-element-content">
         <p>
-          hello <span className="user-name">{props.loggedUser}</span>
+          hello{" "}
+          <a className="user-name" href="/account">
+            {props.loggedUser}
+          </a>
         </p>
         <p className="user-logout" onClick={logout}>
           Log Out

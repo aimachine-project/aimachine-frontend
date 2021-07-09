@@ -55,14 +55,14 @@ function LoginForm(props) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form">
         <label>
           username:
           <input type="text" name="username" onChange={onChange} />
         </label>
         <label>
           password:
-          <input type="text" name="password" onChange={onChange} />
+          <input type="password" name="password" onChange={onChange} />
         </label>
         <input type="submit" value="Login" />
       </form>

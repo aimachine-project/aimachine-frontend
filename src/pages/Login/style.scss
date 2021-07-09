@@ -1,7 +1,28 @@
 .content {
-    padding: 0.5rem;
-    @media (min-width: 1024px) {
-      display: flex;
-      padding: 1rem;
-    }
+  padding: 0.5rem;
+  @media (min-width: 1024px) {
+    display: flex;
+    padding: 1rem;
+    align-items: space-around;
+    justify-content: space-evenly;
   }
+}
+
+.content-section {
+  flex-basis: 50%;
+}
+
+.form {
+  label {
+    // padding: 1em;
+    display: block;
+  }
+  input {
+    margin: 1em;
+  }
+}
+
+.password-error {
+  font-size: 0.75em;
+  color: red;
+}

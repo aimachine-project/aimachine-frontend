@@ -74,14 +74,12 @@ function RegistrationForm(props) {
     doesPasswordMatch || repeatedPassword === "" ? (
       ""
     ) : (
-      <>
-        <small>password does not match</small>
-      </>
+      <p className="password-error">password does not match</p>
     );
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form">
         <label>
           username:
           <input
@@ -108,8 +106,8 @@ function RegistrationForm(props) {
             value={repeatedPassword}
             onChange={confirmPassword}
           />
-          {passwordAlert}
         </label>
+        {passwordAlert}
         <input type="submit" value="Register" />
       </form>
     </>
