@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "../style.scss";
 
-function RegistrationForm(props) {
+function RegistrationForm() {
   const [user, setUser] = useState({ username: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [serverMessage, setServerMessage] = useState("");
   const [repeatedPassword, setReapeatedPassword] = useState("");
   const [doesPasswordMatch, setDoesPasswordMatch] = useState(true);
   const [isInputValid, setIsInputValid] = useState(false);
@@ -27,6 +29,8 @@ function RegistrationForm(props) {
           });
         } else {
           console.log("response from server was not 200");
+          setErrorMessage("can't create user. try other username");
+          setServerMessage("");
         }
       })
       .catch((error) => console.log(error));
@@ -38,10 +42,10 @@ function RegistrationForm(props) {
       user.password === "" ||
       repeatedPassword === ""
     ) {
-      props.setErrorMessage("fields can't be empty");
+      setErrorMessage("fields can't be empty");
       setIsInputValid(false);
     } else if (doesPasswordMatch === false) {
-      props.setErrorMessage("password does not match");
+      setErrorMessage("password does not match");
       setIsInputValid(false);
     } else {
       setIsInputValid(true);
@@ -51,8 +55,8 @@ function RegistrationForm(props) {
     setUser({ username: "", password: "" });
     setReapeatedPassword("");
     console.log(json);
-    props.setErrorMessage("");
-    props.setServerMessage(
+    setErrorMessage("");
+    setServerMessage(
       "user " + user.username + " was created. \n You can now log in"
     );
   };
@@ -80,6 +84,8 @@ function RegistrationForm(props) {
   return (
     <>
       <form onSubmit={handleSubmit} className="form">
+        <div className="error-message">{errorMessage}</div>
+        <div className="server-message">{serverMessage}</div>
         <label>
           username:
           <input

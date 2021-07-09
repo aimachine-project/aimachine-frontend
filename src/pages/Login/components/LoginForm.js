@@ -5,6 +5,8 @@ import "../style.scss";
 
 function LoginForm(props) {
   const [user, setUser] = useState({ username: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [serverMessage, setServerMessage] = useState("");
   const [isInputValid, setIsInputValid] = useState(false);
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
@@ -30,6 +32,9 @@ function LoginForm(props) {
           });
         } else {
           console.log("response from server was not 200");
+          setErrorMessage(
+            "Can't log in. Check if your username and password is correct"
+          );
         }
       })
       .catch((error) => console.log(error));
@@ -37,7 +42,7 @@ function LoginForm(props) {
 
   const validateInput = () => {
     if (user.username === "" || user.password === "") {
-      props.setErrorMessage("fields can't be empty");
+      setErrorMessage("fields can't be empty");
       setIsInputValid(false);
     } else {
       setIsInputValid(true);
@@ -49,13 +54,15 @@ function LoginForm(props) {
     props.setRedirect(true);
     props.setLoggedUser(json.username);
     console.log(json);
-    props.setErrorMessage("");
-    props.setServerMessage("user " + user.username + " was logged in.");
+    setErrorMessage("");
+    setServerMessage("user " + user.username + " was logged in.");
   };
 
   return (
     <>
       <form onSubmit={handleSubmit} className="form">
+        <div className="error-message">{errorMessage}</div>
+        <div className="server-message">{serverMessage}</div>
         <label>
           username:
           <input type="text" name="username" onChange={onChange} />

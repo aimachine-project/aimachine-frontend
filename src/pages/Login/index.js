@@ -6,8 +6,6 @@ import RegistrationForm from "./components/RegisterForm";
 import PageTitle from "../components/PageTitle";
 
 function Login(props) {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [serverMessage, setServerMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
 
   if (redirect) {
@@ -18,21 +16,14 @@ function Login(props) {
       <div className="content">
         <section className="content-section">
           <PageTitle title="Login!" />
-          <div className="error-message">{errorMessage}</div>
-          <div className="server-message">{serverMessage}</div>
           <LoginForm
-            setErrorMessage={(message) => setErrorMessage(message)}
-            setServerMessage={(message) => setServerMessage(message)}
             setRedirect={(bool) => setRedirect(bool)}
             setLoggedUser={(username) => props.setLoggedUser(username)}
           />
         </section>
         <section className="content-section">
           <PageTitle title="or Register" />
-          <RegistrationForm
-            setErrorMessage={(message) => setErrorMessage(message)}
-            setServerMessage={(message) => setServerMessage(message)}
-          />
+          <RegistrationForm />
         </section>
       </div>
     </>
