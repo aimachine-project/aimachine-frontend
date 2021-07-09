@@ -29,7 +29,7 @@ function Login(props) {
       .catch((error) => console.log(error));
   };
 
-  if (redirect && true === false) {
+  if (redirect) {
     return <Redirect to="/account" />;
   }
   return (
@@ -40,6 +40,7 @@ function Login(props) {
         setErrorMessage={(message) => setErrorMessage(message)}
         setServerMessage={(message) => setServerMessage(message)}
         setRedirect={(bool) => setRedirect(bool)}
+        setLoggedUser={(username) => props.setLoggedUser(username)}
       />
       <RegistrationForm
         setErrorMessage={(message) => setErrorMessage(message)}

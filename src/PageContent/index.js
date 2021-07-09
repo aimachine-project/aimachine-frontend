@@ -16,7 +16,15 @@ function PageContent(props) {
           <Redirect to="/" />
         </Route>
         <Route path="/game/:gameName" component={Game} />
-        <Route exact path="/login" component={Login} />
+        <Route
+          exact
+          path="/login"
+          component={() => (
+            <Login
+              setLoggedUser={(username) => props.setLoggedUser(username)}
+            />
+          )}
+        />
         <Route exact path="/account" component={Account} />
         <Route component={PageNotFound} />
       </Switch>

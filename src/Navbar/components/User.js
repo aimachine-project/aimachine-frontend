@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import React from "react";
 import "../Navbar.scss";
 
@@ -13,6 +14,7 @@ function User(props) {
       .then((response) => {
         if (response.ok) {
           props.setLoggedUser("");
+          Cookies.remove("isLoggedIn");
           console.log("logged out");
         } else {
           console.log("response from server was not 200");

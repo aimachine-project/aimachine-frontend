@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import React, { useState } from "react";
 // import { Redirect } from "react-router-dom";
 import "../style.scss";
@@ -43,10 +44,13 @@ function LoginForm(props) {
     }
   };
   const onSuccesfullSubmit = (json) => {
+    const in30Minutes = 1 / 24;
+    Cookies.set("isLoggedIn", "is logged in: true", { expires: in30Minutes });
+    props.setRedirect(true);
+    props.setLoggedUser(json.username);
     console.log(json);
     props.setErrorMessage("");
     props.setServerMessage("user " + user.username + " was logged in.");
-    props.setRedirect(true);
   };
 
   return (
