@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import React from "react";
 import "../Navbar.scss";
 import { LOGOUT_URL } from "../../utilities/URL";
@@ -11,7 +10,6 @@ function User(props) {
     const apiUrl = LOGOUT_URL;
     const responseOk = (response) => {
       props.setLoggedUser("");
-      Cookies.remove("isLoggedIn");
       console.log("logged out");
     };
     const responseNotOk = () => {
