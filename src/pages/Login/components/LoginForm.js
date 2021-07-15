@@ -3,6 +3,7 @@ import React, { useState } from "react";
 // import { Redirect } from "react-router-dom";
 import "../style.scss";
 import { LOGIN_URL } from "../../../utilities/URL";
+import { GetFromApi } from "../../../utilities/ApiHelper";
 
 function LoginForm(props) {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -12,33 +13,26 @@ function LoginForm(props) {
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
-  const url = LOGIN_URL;
   const handleSubmit = (event) => {
     event.preventDefault();
 
     validateInput();
     if (isInputValid === false) return;
 
-    fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: "Basic " + btoa(user.username + ":" + user.password),
-      },
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((json) => {
-            onSuccesfullSubmit(json);
-          });
-        } else {
-          console.log("response from server was not 200");
-          setErrorMessage(
-            "Can't log in. Check if your username and password is correct"
-          );
-        }
-      })
-      .catch((error) => console.log(error));
+    const apiUrl = LOGIN_URL;
+    const userAuth = "Basic " + btoa(user.username + ":" + user.password);
+    const responseOk = (response) => {
+      response.json().then((json) => {
+        onSuccesfullSubmit(json);
+      });
+    };
+    const responseNotOk = () => {
+      console.log("response from server was not 200");
+      setErrorMessage(
+        "Can't log in. Check if your username and password is correct"
+      );
+    };
+    GetFromApi(apiUrl, userAuth, responseOk, responseNotOk);
   };
 
   const validateInput = () => {

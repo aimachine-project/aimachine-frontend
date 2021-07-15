@@ -4,6 +4,7 @@ import Navbar from "../Navbar";
 import PageContent from "../PageContent";
 import "./App.scss";
 import { LOGIN_URL } from "../utilities/URL";
+import { GetFromApi } from "../utilities/ApiHelper";
 
 function App() {
   const [loggedUser, setLoggedUser] = useState("");
@@ -19,30 +20,22 @@ function App() {
   };
 
   const logUserIn = () => {
-    const url = LOGIN_URL;
-    fetch(url, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((json) => {
-            Cookies.set("isLoggedIn", "is logged in: true");
-            setLoggedUser(json.username);
-            setTimeout(() => {
-              console.log("zalogowano z API");
-            }, 1000);
-            // const in1hour = 1 / 24;
-          });
-        } else {
-          Cookies.remove("isLoggedIn");
-          console.log("response from server was not 200");
-        }
-      })
-      .catch((error) => {
-        Cookies.remove("isLoggedIn");
-        console.log(error);
+    const apiUrl = LOGIN_URL;
+    const responseOk = (response) => {
+      response.json().then((json) => {
+        Cookies.set("isLoggedIn", "is logged in: true");
+        setLoggedUser(json.username);
+        setTimeout(() => {
+          console.log("zalogowano z API");
+        }, 1000);
+        // const in1hour = 1 / 24;
       });
+    };
+    const responseNotOk = () => {
+      Cookies.remove("isLoggedIn");
+      console.log("response from server was not 200");
+    };
+    GetFromApi(apiUrl, "", responseOk, responseNotOk);
   };
 
   useEffect(() => checkLoggedIn(), []);

@@ -2,29 +2,25 @@ import React, { useEffect, useState } from "react";
 import PageTitle from "../components/PageTitle";
 import "./style.scss";
 import { USER_INFO_URL } from "../../utilities/URL";
+import { GetFromApi } from "../../utilities/ApiHelper";
 
 function Account(props) {
   const [user, setUser] = useState({ username: "", id: "" });
 
   useEffect(() => fetchUserInfo(), []);
 
-  const url = USER_INFO_URL;
   const fetchUserInfo = () => {
-    fetch(url, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((json) => {
-            console.log(json);
-            setUser({ username: json.username, id: json.id });
-          });
-        } else {
-          console.log("response from server was not 200");
-        }
-      })
-      .catch((error) => console.log(error));
+    const apiUrl = USER_INFO_URL;
+    const responseOk = (response) => {
+      response.json().then((json) => {
+        console.log(json);
+        setUser({ username: json.username, id: json.id });
+      });
+    };
+    const responseNotOk = () => {
+      console.log("response from server was not 200");
+    };
+    GetFromApi(apiUrl, "", responseOk, responseNotOk);
   };
   return (
     <>

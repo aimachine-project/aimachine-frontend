@@ -2,26 +2,22 @@ import Cookies from "js-cookie";
 import React from "react";
 import "../Navbar.scss";
 import { LOGOUT_URL } from "../../utilities/URL";
+import { GetFromApi } from "../../utilities/ApiHelper";
 
 function User(props) {
   const isLoggedIn = props.loggedUser !== "";
 
   const logout = () => {
-    const url = LOGOUT_URL;
-    fetch(url, {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          props.setLoggedUser("");
-          Cookies.remove("isLoggedIn");
-          console.log("logged out");
-        } else {
-          console.log("response from server was not 200");
-        }
-      })
-      .catch((error) => console.log(error));
+    const apiUrl = LOGOUT_URL;
+    const responseOk = (response) => {
+      props.setLoggedUser("");
+      Cookies.remove("isLoggedIn");
+      console.log("logged out");
+    };
+    const responseNotOk = () => {
+      console.log("response from server was not 200");
+    };
+    GetFromApi(apiUrl, "", responseOk, responseNotOk);
   };
 
   let content = "";

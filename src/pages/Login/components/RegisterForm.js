@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../style.scss";
 import { REGISTER_URL } from "../../../utilities/URL";
+import { PostToApi } from "../../../utilities/ApiHelper";
 
 function RegistrationForm() {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -10,31 +11,23 @@ function RegistrationForm() {
   const [doesPasswordMatch, setDoesPasswordMatch] = useState(true);
   const [isInputValid, setIsInputValid] = useState(false);
 
-  const url = REGISTER_URL;
   const handleSubmit = (event) => {
     event.preventDefault();
 
     validateInput();
     if (isInputValid === false) return;
 
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user),
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then((json) => {
-            onSuccesfullSubmit(json);
-            // window.location.reload();
-          });
-        } else {
-          console.log("response from server was not 200");
-          setErrorMessage("can't create user. try other username");
-          setServerMessage("");
-        }
-      })
-      .catch((error) => console.log(error));
+    const apiUrl = REGISTER_URL;
+    const requestBody = JSON.stringify(user);
+    const responseOk = (json) => {
+      onSuccesfullSubmit(json);
+    };
+    const responseNotOk = () => {
+      console.log("response from server was not 200");
+      setErrorMessage("can't create user. try other username");
+      setServerMessage("");
+    };
+    PostToApi(apiUrl, requestBody, responseOk, responseNotOk);
   };
 
   const validateInput = () => {
