@@ -1,12 +1,13 @@
 import Cookies from "js-cookie";
 import React from "react";
 import "../Navbar.scss";
+import { LOGOUT_URL } from "../../utilities/URL";
 
 function User(props) {
   const isLoggedIn = props.loggedUser !== "";
 
   const logout = () => {
-    const url = "http://" + document.domain + ":8080/logout";
+    const url = LOGOUT_URL;
     fetch(url, {
       method: "POST",
       credentials: "include",

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import PageTitle from "../components/PageTitle";
 import "./style.scss";
+import { USER_INFO_URL } from "../../utilities/URL";
 
 function Account(props) {
   const [user, setUser] = useState({ username: "", id: "" });
 
   useEffect(() => fetchUserInfo(), []);
 
-  const url = "http://" + document.domain + ":8080/api/users/self";
+  const url = USER_INFO_URL;
   const fetchUserInfo = () => {
     fetch(url, {
       method: "GET",

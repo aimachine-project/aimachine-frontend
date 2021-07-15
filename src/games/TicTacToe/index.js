@@ -1,6 +1,7 @@
 import React from "react";
 import Board from "./components/Board";
 import "./style.scss";
+import { TICTACTOE_URL } from "../../utilities/URL";
 
 // TO DO: change to env variable
 // const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
@@ -147,8 +148,8 @@ function Details(props) {
 }
 
 function connectSocket(cb) {
-  const protocol = location.protocol.replace("http", "ws");
-  const serverUrl = protocol + "//" + document.domain + ":8080/game/tictactoe";
+  // const protocol = location.protocol.replace("http", "ws");
+  const serverUrl = TICTACTOE_URL;
   const socket = new WebSocket(serverUrl);
   socket.onopen = () => {
     cb(null, "Connected to server");

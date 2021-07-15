@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import React, { useState } from "react";
 // import { Redirect } from "react-router-dom";
 import "../style.scss";
+import { LOGIN_URL } from "../../../utilities/URL";
 
 function LoginForm(props) {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -11,7 +12,7 @@ function LoginForm(props) {
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
 
-  const url = "http://" + document.domain + ":8080/api/users/self";
+  const url = LOGIN_URL;
   const handleSubmit = (event) => {
     event.preventDefault();
 

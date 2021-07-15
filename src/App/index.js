@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import PageContent from "../PageContent";
 import "./App.scss";
+import { LOGIN_URL } from "../utilities/URL";
 
 function App() {
   const [loggedUser, setLoggedUser] = useState("");
@@ -18,7 +19,7 @@ function App() {
   };
 
   const logUserIn = () => {
-    const url = "http://" + document.domain + ":8080/api/users/self";
+    const url = LOGIN_URL;
     fetch(url, {
       method: "GET",
       credentials: "include",

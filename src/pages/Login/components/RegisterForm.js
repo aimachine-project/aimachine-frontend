@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../style.scss";
+import { REGISTER_URL } from "../../../utilities/URL";
 
 function RegistrationForm() {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -9,7 +10,7 @@ function RegistrationForm() {
   const [doesPasswordMatch, setDoesPasswordMatch] = useState(true);
   const [isInputValid, setIsInputValid] = useState(false);
 
-  const url = "http://" + document.domain + ":8080/api/register";
+  const url = REGISTER_URL;
   const handleSubmit = (event) => {
     event.preventDefault();
 
