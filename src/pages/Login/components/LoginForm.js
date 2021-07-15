@@ -41,8 +41,8 @@ function LoginForm(props) {
     }
   };
   const onSuccesfullSubmit = (json) => {
-    setUser(json);
     props.setRedirect(true);
+    props.setUser(json.username);
     console.log(json);
   };
 

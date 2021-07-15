@@ -12,7 +12,7 @@ function App() {
     const apiUrl = LOGIN_URL;
     const responseOk = (response) => {
       response.json().then((json) => {
-        setUser(json);
+        setUser(json.username);
         console.log("zalogowano z API");
       });
     };
@@ -22,8 +22,8 @@ function App() {
     GetFromApi(apiUrl, "", responseOk, responseNotOk);
   };
 
-  const setUser = (json) => {
-    setLoggedUsername(json.username);
+  const setUser = (username) => {
+    setLoggedUsername(username);
   };
 
   useEffect(() => logUserIn(), []);
