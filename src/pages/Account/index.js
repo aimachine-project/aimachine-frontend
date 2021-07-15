@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router";
 import PageTitle from "../components/PageTitle";
 import "./style.scss";
 import { USER_INFO_URL } from "../../utilities/URL";
@@ -6,6 +7,7 @@ import { GetFromApi } from "../../utilities/ApiHelper";
 
 function Account(props) {
   const [user, setUser] = useState({ username: "", id: "" });
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => fetchUserInfo(), []);
 
@@ -19,9 +21,15 @@ function Account(props) {
     };
     const responseNotOk = () => {
       console.log("response from server was not 200");
+      console.log("hello");
+      setRedirect(true);
     };
     GetFromApi(apiUrl, "", responseOk, responseNotOk);
   };
+
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
   return (
     <>
       <PageTitle title="Account!" />
