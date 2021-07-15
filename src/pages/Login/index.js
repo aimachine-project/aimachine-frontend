@@ -18,7 +18,7 @@ function Login(props) {
           <PageTitle title="Login!" />
           <LoginForm
             setRedirect={(bool) => setRedirect(bool)}
-            setLoggedUser={(username) => props.setLoggedUser(username)}
+            setUser={(username) => props.setUser(username)}
           />
         </section>
         <section className="content-section">

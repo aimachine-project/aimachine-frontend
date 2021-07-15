@@ -1,6 +1,5 @@
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import React, { useState } from "react";
-// import { Redirect } from "react-router-dom";
 import "../style.scss";
 import { LOGIN_URL } from "../../../utilities/URL";
 import { GetFromApi } from "../../../utilities/ApiHelper";
@@ -8,7 +7,6 @@ import { GetFromApi } from "../../../utilities/ApiHelper";
 function LoginForm(props) {
   const [user, setUser] = useState({ username: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
-  const [serverMessage, setServerMessage] = useState("");
   const [isInputValid, setIsInputValid] = useState(false);
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
@@ -44,20 +42,15 @@ function LoginForm(props) {
     }
   };
   const onSuccesfullSubmit = (json) => {
-    const in30Minutes = 1 / 24;
-    Cookies.set("isLoggedIn", "is logged in: true", { expires: in30Minutes });
+    setUser(json);
     props.setRedirect(true);
-    props.setLoggedUser(json.username);
     console.log(json);
-    setErrorMessage("");
-    setServerMessage("user " + user.username + " was logged in.");
   };
 
   return (
     <>
       <form onSubmit={handleSubmit} className="form">
         <div className="error-message">{errorMessage}</div>
-        <div className="server-message">{serverMessage}</div>
         <label>
           username:
           <input type="text" name="username" onChange={onChange} />

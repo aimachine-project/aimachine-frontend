@@ -7,7 +7,7 @@ import { LOGIN_URL } from "../utilities/URL";
 import { GetFromApi } from "../utilities/ApiHelper";
 
 function App() {
-  const [loggedUser, setLoggedUser] = useState("");
+  const [loggedUsername, setLoggedUsername] = useState("");
   const checkLoggedIn = () => {
     const cookie = Cookies.get("isLoggedIn");
 
@@ -23,12 +23,8 @@ function App() {
     const apiUrl = LOGIN_URL;
     const responseOk = (response) => {
       response.json().then((json) => {
-        Cookies.set("isLoggedIn", "is logged in: true");
-        setLoggedUser(json.username);
-        setTimeout(() => {
-          console.log("zalogowano z API");
-        }, 1000);
-        // const in1hour = 1 / 24;
+        setUser(json);
+        console.log("zalogowano z API");
       });
     };
     const responseNotOk = () => {
@@ -38,15 +34,21 @@ function App() {
     GetFromApi(apiUrl, "", responseOk, responseNotOk);
   };
 
+  const setUser = (json) => {
+    const in30Minutes = 1 / 24;
+    Cookies.set("isLoggedIn", "is logged in: true", { expires: in30Minutes });
+    setLoggedUsername(json.username);
+  };
+
   useEffect(() => checkLoggedIn(), []);
 
   return (
     <div className="app">
       <Navbar
-        loggedUser={loggedUser}
-        setLoggedUser={(username) => setLoggedUser(username)}
+        loggedUser={loggedUsername}
+        setLoggedUser={(username) => setLoggedUsername(username)}
       />
-      <PageContent setLoggedUser={(username) => setLoggedUser(username)} />
+      <PageContent setUser={(username) => setUser(username)} />
     </div>
   );
 }
