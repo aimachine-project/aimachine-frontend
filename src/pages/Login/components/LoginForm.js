@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../style.scss";
-import { LOGIN_URL } from "../../../utilities/URL";
-import { GetFromApi } from "../../../utilities/ApiHelper";
+import { LogInToApi } from "../../../utilities/LoginHelper";
 
 function LoginForm(props) {
   const [user, setUser] = useState({ username: "", password: "" });
@@ -16,20 +15,8 @@ function LoginForm(props) {
     validateInput();
     if (isInputValid === false) return;
 
-    const apiUrl = LOGIN_URL;
     const userAuth = "Basic " + btoa(user.username + ":" + user.password);
-    const responseOk = (response) => {
-      response.json().then((json) => {
-        onSuccesfullSubmit(json);
-      });
-    };
-    const responseNotOk = () => {
-      console.log("response from server was not 200");
-      setErrorMessage(
-        "Can't log in. Check if your username and password is correct"
-      );
-    };
-    GetFromApi(apiUrl, userAuth, responseOk, responseNotOk);
+    LogInToApi(onSuccesfullSubmit, userAuth);
   };
 
   const validateInput = () => {
@@ -42,7 +29,8 @@ function LoginForm(props) {
   };
   const onSuccesfullSubmit = (json) => {
     props.setRedirect(true);
-    props.setUser(json.username);
+    console.log(json.username);
+    props.setLoggedUsername(json.username);
     console.log(json);
   };
 

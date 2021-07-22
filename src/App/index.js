@@ -2,31 +2,19 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar";
 import PageContent from "../PageContent";
 import "./App.scss";
-import { LOGIN_URL } from "../utilities/URL";
-import { GetFromApi } from "../utilities/ApiHelper";
+// import { LOGIN_URL } from "../utilities/URL";
+// import { GetFromApi } from "../utilities/ApiHelper";
+import { LogUserIn } from "../utilities/LoginHelper";
+// import Cookies from "js-cookie";
 
 function App() {
   const [loggedUsername, setLoggedUsername] = useState("");
 
-  const logUserIn = () => {
-    const apiUrl = LOGIN_URL;
-    const responseOk = (response) => {
-      response.json().then((json) => {
-        setUser(json.username);
-        console.log("zalogowano z API");
-      });
-    };
-    const responseNotOk = () => {
-      console.log("response from server was not 200");
-    };
-    GetFromApi(apiUrl, "", responseOk, responseNotOk);
+  const onAutomaticLogIn = (json) => {
+    setLoggedUsername(json.username);
   };
 
-  const setUser = (username) => {
-    setLoggedUsername(username);
-  };
-
-  useEffect(() => logUserIn(), []);
+  useEffect(() => LogUserIn(onAutomaticLogIn), []);
 
   return (
     <div className="app">
@@ -34,7 +22,9 @@ function App() {
         loggedUser={loggedUsername}
         setLoggedUser={(username) => setLoggedUsername(username)}
       />
-      <PageContent setUser={(username) => setUser(username)} />
+      <PageContent
+        setLoggedUsername={(username) => setLoggedUsername(username)}
+      />
     </div>
   );
 }

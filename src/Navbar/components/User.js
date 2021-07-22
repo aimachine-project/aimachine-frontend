@@ -1,21 +1,13 @@
 import React from "react";
 import "../Navbar.scss";
-import { LOGOUT_URL } from "../../utilities/URL";
-import { GetFromApi } from "../../utilities/ApiHelper";
+import { Logout } from "../../utilities/LoginHelper";
 
 function User(props) {
   const isLoggedIn = props.loggedUser !== "";
 
-  const logout = () => {
-    const apiUrl = LOGOUT_URL;
-    const responseOk = (response) => {
-      props.setLoggedUser("");
-      console.log("logged out");
-    };
-    const responseNotOk = () => {
-      console.log("response from server was not 200");
-    };
-    GetFromApi(apiUrl, "", responseOk, responseNotOk);
+  const handleLogout = () => {
+    const onSuccesfullLogout = () => props.setLoggedUser("");
+    Logout(onSuccesfullLogout);
   };
 
   let content = "";
@@ -28,7 +20,7 @@ function User(props) {
             {props.loggedUser}
           </a>
         </p>
-        <p className="user-logout" onClick={logout}>
+        <p className="user-logout" onClick={handleLogout}>
           Log Out
         </p>
       </span>

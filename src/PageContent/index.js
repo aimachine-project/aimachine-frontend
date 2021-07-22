@@ -20,7 +20,11 @@ function PageContent(props) {
           exact
           path="/login"
           component={() => (
-            <Login setUser={(username) => props.setUser(username)} />
+            <Login
+              setLoggedUsername={(username) =>
+                props.setLoggedUsername(username)
+              }
+            />
           )}
         />
         <Route exact path="/account" component={Account} />
