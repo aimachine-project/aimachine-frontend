@@ -10,6 +10,18 @@
 
 .content-section {
   flex-basis: 50%;
+  margin-bottom: 3em;
+}
+
+.content-section ~ .content-section {
+  border-top: 2px dashed #060b26;
+  padding-top: 1em;
+
+  @media (min-width: 1024px) {
+    border-top: none;
+    padding-top: 0;
+    border-left: 2px dashed #060b26;
+  }
 }
 
 .form {
@@ -21,8 +33,12 @@
 .form-section {
   align-self: stretch;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr;
   align-items: center;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
 }
 .form-section-label {
   grid-column: 1/2;
