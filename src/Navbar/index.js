@@ -2,27 +2,29 @@ import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 import { IconContext } from "react-icons";
 import * as BiIcons from "react-icons/bi";
+import User from "./components/User";
 import "./Navbar.scss";
 
-function Navbar() {
+function Navbar(props) {
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
 
   const renderSidebarData = (
     <>
-      <li key="home" className="nav-text">
-        <a href="/">
+      <User loggedUser={props.loggedUser} setLoggedUser={props.setLoggedUser} />
+      <li key="home" className="nav-element">
+        <a href="/" className="nav-element-content" onClick={showSidebar}>
           <BiIcons.BiHome />
-          <span className="ml-3">Home</span>
+          <span className="nav-element-text">Home</span>
         </a>
       </li>
-      <li key="login" className="nav-text">
-        <a href="/">
-          <BiIcons.BiUser />
-          <span className="ml-3">Log In</span>
+      {/* <li key="login" className="nav-element">
+        <a href="/" className="nav-element-content" onClick={showSidebar}>
+          <BiIcons.BiQuestionMark />
+          <span className="nav-element-text">Other Link</span>
         </a>
-      </li>
+      </li> */}
     </>
   );
 
@@ -36,9 +38,7 @@ function Navbar() {
           <a href="#" className="navbar-toggle">
             <BiIcons.BiX onClick={showSidebar} />
           </a>
-          <ul className="navbar-elements" onClick={showSidebar}>
-            {renderSidebarData}
-          </ul>
+          <ul className="navbar-elements">{renderSidebarData}</ul>
         </IconContext.Provider>
       </nav>
     </div>

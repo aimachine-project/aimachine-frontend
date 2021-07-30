@@ -1,0 +1,72 @@
+.content {
+  padding: 0.5rem;
+  @media (min-width: 1024px) {
+    display: flex;
+    padding: 1rem;
+    align-items: space-around;
+    justify-content: space-evenly;
+  }
+}
+
+.content-section {
+  flex-basis: 50%;
+  margin-bottom: 3em;
+}
+
+.content-section ~ .content-section {
+  border-top: 2px dashed #060b26;
+  padding-top: 1em;
+
+  @media (min-width: 1024px) {
+    border-top: none;
+    padding-top: 0;
+    border-left: 2px dashed #060b26;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form-section {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}
+.form-section-label {
+  grid-column: 1/2;
+  text-align: right;
+}
+.form-section-input {
+  margin: 1em;
+  grid-column: 2/3;
+}
+.form-submit {
+  padding: 0.5em 3em;
+  background-color: rgba(#060b26, 0.8);
+  color: white;
+  font-weight: 600;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(#060b26, 1);
+  }
+}
+
+.server-message {
+  color: green;
+}
+.error-message {
+  color: red;
+}
+.password-error {
+  font-size: 0.75em;
+  color: red;
+}
