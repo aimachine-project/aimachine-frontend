@@ -19,12 +19,12 @@ function Navbar(props) {
           <span className="nav-element-text">Home</span>
         </a>
       </li>
-      <li key="login" className="nav-element">
-        <a href="/login" className="nav-element-content" onClick={showSidebar}>
-          <BiIcons.BiUser />
-          <span className="nav-element-text">Log In</span>
+      {/* <li key="login" className="nav-element">
+        <a href="/" className="nav-element-content" onClick={showSidebar}>
+          <BiIcons.BiQuestionMark />
+          <span className="nav-element-text">Other Link</span>
         </a>
-      </li>
+      </li> */}
     </>
   );
 
