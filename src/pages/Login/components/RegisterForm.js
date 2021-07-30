@@ -80,35 +80,38 @@ function RegistrationForm() {
       <form onSubmit={handleSubmit} className="form">
         <div className="error-message">{errorMessage}</div>
         <div className="server-message">{serverMessage}</div>
-        <label>
-          username:
+        <label className="form-section">
+          <span className="form-section-label">username:</span>
           <input
             type="text"
             name="username"
             value={user.username}
             onChange={onChange}
+            className="form-section-input"
           />
         </label>
-        <label>
-          password:
+        <label className="form-section">
+          <span className="form-section-label">password:</span>
           <input
             type="password"
             name="password"
             value={user.password}
             onChange={onChange}
+            className="form-section-input"
           />
         </label>
-        <label>
-          confirm password:
+        <label className="form-section">
+          <span className="form-section-label">confirm password:</span>
           <input
             type="password"
             name="repeatedPassword"
             value={repeatedPassword}
             onChange={confirmPassword}
+            className="form-section-input"
           />
         </label>
         {passwordAlert}
-        <input type="submit" value="Register" />
+        <input type="submit" value="Register" className="form-submit" />
       </form>
     </>
   );

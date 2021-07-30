@@ -38,15 +38,25 @@ function LoginForm(props) {
     <>
       <form onSubmit={handleSubmit} className="form">
         <div className="error-message">{errorMessage}</div>
-        <label>
-          username:
-          <input type="text" name="username" onChange={onChange} />
+        <label className="form-section">
+          <span className="form-section-label">username:</span>
+          <input
+            type="text"
+            name="username"
+            onChange={onChange}
+            className="form-section-input"
+          />
         </label>
-        <label>
-          password:
-          <input type="password" name="password" onChange={onChange} />
+        <label className="form-section">
+          <span className="form-section-label">password:</span>
+          <input
+            type="password"
+            name="password"
+            onChange={onChange}
+            className="form-section-input"
+          />
         </label>
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" className="form-submit" />
       </form>
     </>
   );
