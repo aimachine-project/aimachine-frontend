@@ -3,7 +3,7 @@ import TicTacToe from "./index.js";
 import { shallow } from "enzyme";
 
 describe("TicTacToe Board", () => {
-  let wrapper = shallow(<TicTacToe />);
+  const wrapper = shallow(<TicTacToe />);
 
   test("Should have the initial state squares of empty array", () => {
     expect(wrapper.state().board).toEqual(Array(9).fill(null));

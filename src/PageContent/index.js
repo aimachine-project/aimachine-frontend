@@ -15,7 +15,7 @@ function PageContent(props) {
         <Route exact path="/game">
           <Redirect to="/" />
         </Route>
-        <Route path="/game/:gameName" component={Game} />
+        <Route path="/games/:gameName" component={Game} />
         <Route
           exact
           path="/login"
