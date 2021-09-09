@@ -26,6 +26,11 @@ function MainContent() {
         Pick your favourite from<span>(not so)</span> many games:
       </p>
       <GameCard title="Tic Tac Toe" route="/game/tictactoe" players="40" />
+      <GameCard
+        title="Tic Tac Toe Expanded"
+        route="/game/tictactoeexp"
+        players="27"
+      />
     </div>
   );
 }

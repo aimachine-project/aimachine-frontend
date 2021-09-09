@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import TicTacToe from "../../games/TicTacToe/index.js";
+import TicTacToeExpanded from "../../games/TicTacToeExpanded/index.js";
 import PageTitle from "../components/PageTitle.js";
 
 function Game() {
@@ -15,6 +16,9 @@ function Game() {
 
   if (gameName.toLowerCase() === "tictactoe") {
     content = <TicTacToe />;
+  }
+  if (gameName.toLowerCase() === "tictactoeexp") {
+    content = <TicTacToeExpanded />;
   }
   return content;
 }
