@@ -16,7 +16,7 @@ function LoginForm(props) {
     if (isInputValid === false) return;
 
     const userAuth = "Basic " + btoa(user.username + ":" + user.password);
-    LogInToApi(onSuccesfullSubmit, userAuth);
+    LogInToApi(onSuccessfulSubmit, userAuth);
   };
 
   const validateInput = () => {
@@ -27,7 +27,7 @@ function LoginForm(props) {
       setIsInputValid(true);
     }
   };
-  const onSuccesfullSubmit = (json) => {
+  const onSuccessfulSubmit = (json) => {
     props.setRedirect(true);
     console.log(json.username);
     props.setLoggedUsername(json.username);

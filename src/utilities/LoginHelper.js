@@ -23,7 +23,6 @@ export function LogInToApi(onSuccesfullLogin, userAuth) {
   const responseOk = (response) => {
     response.json().then((json) => {
       onSuccesfullLogin(json);
-      //   console.log(json);
       Cookies.set("isLoggedIn", "is logged in: true");
     });
   };
