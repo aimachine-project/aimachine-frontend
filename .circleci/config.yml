@@ -81,7 +81,8 @@ jobs:
           command: |
             source deployconfig
             if [ -d aimachine-backend ]; then rm -rf aimachine-backend; fi
-            git clone --branch $BACKEND_BRANCH https://github.com/aimachine-project/aimachine-backend.git
+            git clone --branch $BACKEND_BRANCH $BACKEND_REPO_URL
+            if [ "$?" -eq 128 ]; then git clone --branch development $BACKEND_REPO_URL; fi
             cd aimachine-backend
             git pull
             sh gradlew bootJar
