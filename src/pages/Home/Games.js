@@ -9,7 +9,7 @@ function Games() {
         <GameCard
           key={index}
           title={game.name}
-          route={`/game/${game.route}`}
+          route={`/games/${game.route}`}
           players={Math.floor(Math.random() * 50)}
         />
       ))}
