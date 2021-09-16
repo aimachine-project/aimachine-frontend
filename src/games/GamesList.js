@@ -1,12 +1,27 @@
 import React from "react";
 import TicTacToe from "./TicTacToe";
-import TicTacToeExpanded from "./TicTacToeExpanded";
+// import TicTacToeExpanded from "./TicTacToeExpanded";
 
+const protocol = location.protocol.replace("http", "ws");
+const baseWebSocket = protocol + "//" + document.domain + ":8080";
 export const GAMES_LIST = [
-  { name: "Tic Tac Toe", route: "tictactoe", component: <TicTacToe /> },
+  {
+    name: "Tic Tac Toe",
+    route: "tictactoe",
+    socketUrl: baseWebSocket + "/games/tictactoe",
+    component: (
+      <TicTacToe boardSize="3" socketUrl={baseWebSocket + "/games/tictactoe"} />
+    ),
+  },
   {
     name: "Tic Tac Toe Expanded",
     route: "tictactoeexp",
-    component: <TicTacToeExpanded />,
+    socketUrl: baseWebSocket + "/games/tictactoenfields",
+    component: (
+      <TicTacToe
+        boardSize="14"
+        socketUrl={baseWebSocket + "/games/tictactoenfields"}
+      />
+    ),
   },
 ];
