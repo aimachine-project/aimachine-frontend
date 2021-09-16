@@ -1,9 +1,10 @@
 import React from "react";
 import Board from "./components/Board";
+import {
+  ConnectToSocket,
+  ReactToSocketMessage,
+} from "../utilities/SocketHelper";
 import "./style.scss";
-
-// TO DO: change to env variable
-// const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
 
 class TicTacToe extends React.Component {
   constructor(props) {
@@ -19,48 +20,12 @@ class TicTacToe extends React.Component {
   }
 
   componentDidMount() {
-    const socket = connectSocket(this.props.socketUrl, (err, serverMessage) => {
-      this.setState({ message: serverMessage });
-      if (err) console.log(err);
-    });
+    const socket = ConnectToSocket(this.props.socketUrl);
     this.setState({ currentSocket: socket });
     const client = this;
 
     socket.onmessage = (event) => {
-      const json = JSON.parse(event.data);
-      switch (json.eventType) {
-        case "game_id": {
-          client.setState({ gameId: json.eventMessage });
-          break;
-        }
-        case "client_id": {
-          client.setState({ clientId: json.eventMessage });
-          break;
-        }
-        case "field_to_be_marked": {
-          const data = JSON.parse(json.eventMessage);
-          const rowIndex = data.rowIndex;
-          const colIndex = data.colIndex;
-          const index = rowIndex * this.props.boardSize + colIndex;
-          // TO DO: should data.fieldToken be 1/-1 if the server message at the end is "X/O won"?
-          const token = data.fieldToken === 1 ? "x" : "o";
-          client.markField(index, token);
-          break;
-        }
-        case "movement_allowed": {
-          // TO DO: change "movement_allowed" to something more fitting
-          client.setState({ currentPlayer: json.eventMessage });
-          break;
-        }
-        case "server_message": {
-          // TO DO: rethink messages from server to avoid repetition
-          client.setState({ message: json.eventMessage });
-          break;
-        }
-        default: {
-          console.log("message not handled: " + event.data);
-        }
-      }
+      ReactToSocketMessage(event, client);
     };
   }
 
@@ -145,18 +110,6 @@ function Details(props) {
       </div>
     );
   }
-}
-
-function connectSocket(serverUrl, cb) {
-  // const protocol = location.protocol.replace("http", "ws");
-  // const serverUrl = TICTACTOE_URL;
-
-  const socket = new WebSocket(serverUrl);
-  socket.onopen = () => {
-    cb(null, "Connected to server");
-  };
-
-  return socket;
 }
 
 export default TicTacToe;

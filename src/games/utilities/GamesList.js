@@ -1,5 +1,5 @@
 import React from "react";
-import TicTacToe from "./TicTacToe";
+import TicTacToe from "../TicTacToe";
 // import TicTacToeExpanded from "./TicTacToeExpanded";
 
 const protocol = location.protocol.replace("http", "ws");
