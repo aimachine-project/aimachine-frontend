@@ -6,8 +6,8 @@ function User(props) {
   const isLoggedIn = props.loggedUser !== "";
 
   const handleLogout = () => {
-    const onSuccesfullLogout = () => props.setLoggedUser("");
-    Logout(onSuccesfullLogout);
+    const onSuccessfulLogout = () => props.setLoggedUser("");
+    Logout(onSuccessfulLogout);
   };
 
   let content = "";
