@@ -1,5 +1,6 @@
 import React from "react";
 import TicTacToe from "./TicTacToe";
+import Soccer from "./Soccer";
 // import TicTacToeExpanded from "./TicTacToeExpanded";
 
 const protocol = location.protocol.replace("http", "ws");
@@ -23,5 +24,11 @@ export const GAMES_LIST = [
         socketUrl={baseWebSocket + "/games/tictactoenfields"}
       />
     ),
+  },
+  {
+    name: "Soccer",
+    route: "soccer",
+    socketUrl: baseWebSocket + "/games/soccer",
+    component: <Soccer socketUrl={baseWebSocket + "/games/soccer"} />,
   },
 ];
