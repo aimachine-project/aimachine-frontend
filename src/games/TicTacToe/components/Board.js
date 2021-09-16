@@ -19,18 +19,27 @@ class Board extends React.Component {
     );
   }
 
+  renderAllFields() {
+    const fields = [];
+    for (let i = 0; i < this.props.board.length; i++) {
+      fields.push(
+        <Field
+          value={this.props.board[i]}
+          onClick={() => this.props.chooseField(i)}
+        />
+      );
+    }
+    return fields;
+  }
+
   render() {
+    const boardStyle = {
+      gridTemplateColumns: `repeat(${this.props.boardSize}, 1fr)`,
+      gridTemplateRows: `repeat(${this.props.boardSize}, 1fr)`,
+    };
     return (
-      <div className="board bg-blue-900">
-        {this.renderField(0)}
-        {this.renderField(1)}
-        {this.renderField(2)}
-        {this.renderField(3)}
-        {this.renderField(4)}
-        {this.renderField(5)}
-        {this.renderField(6)}
-        {this.renderField(7)}
-        {this.renderField(8)}
+      <div className="board bg-blue-900" style={boardStyle}>
+        {this.renderAllFields()}
       </div>
     );
   }
