@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.scss";
-import GameCard from "./GameCard";
 import PageTitle from "../components/PageTitle";
+import Games from "./Games";
 
 function Home() {
   return (
@@ -25,12 +25,7 @@ function MainContent() {
       <p>
         Pick your favourite from<span>(not so)</span> many games:
       </p>
-      <GameCard title="Tic Tac Toe" route="/game/tictactoe" players="40" />
-      <GameCard
-        title="Tic Tac Toe Expanded"
-        route="/game/tictactoeexp"
-        players="27"
-      />
+      <Games />
     </div>
   );
 }
