@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import TicTacToe from "../../games/TicTacToe/index.js";
 import PageTitle from "../components/PageTitle.js";
+import { GAMES_LIST } from "../../games/GamesList.js";
 
 function Game() {
   const { gameName } = useParams();
@@ -13,9 +13,14 @@ function Game() {
     </>
   );
 
-  if (gameName.toLowerCase() === "tictactoe") {
-    content = <TicTacToe />;
+  const game = GAMES_LIST.filter(
+    (game) => game.route === gameName.toLowerCase()
+  )[0];
+
+  if (game) {
+    content = game.component;
   }
+
   return content;
 }
 
