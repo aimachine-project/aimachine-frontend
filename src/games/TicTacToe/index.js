@@ -1,5 +1,7 @@
 import React from "react";
 import Board from "./components/Board";
+import GameDetails from "../utilities/GameDetails";
+import "../utilities/style.scss";
 import "./style.scss";
 
 // TO DO: change to env variable
@@ -93,15 +95,15 @@ class TicTacToe extends React.Component {
   }
 
   render() {
-    const socketConnected =
+    const isSocketDisconnected =
       this.state.currentSocket == null ||
       this.state.currentSocket.readyState === 0;
     const isTurn = this.state.currentPlayer === this.state.clientId;
 
     return (
-      <div className="page-wrapper flex flex-col lg:flex-row-reverse">
-        <Details
-          socketConnected={socketConnected}
+      <div className="game-page-wrapper">
+        <GameDetails
+          isSocketDisconnected={isSocketDisconnected}
           gameId={this.state.gameId}
           isTurn={isTurn}
           message={this.state.message}
@@ -112,36 +114,6 @@ class TicTacToe extends React.Component {
           chooseField={(i) => this.chooseField(i)}
           boardSize={this.props.boardSize}
         />
-      </div>
-    );
-  }
-}
-
-function Details(props) {
-  if (props.socketConnected) {
-    return (
-      <div className="details">
-        {/* TO DO: Fix styling so the alert is centered without a hack */}
-        <h1></h1>
-        <h1 className="details-error">
-          There has been an error while connecting to the server
-        </h1>
-        <h1></h1>
-      </div>
-    );
-  } else {
-    return (
-      <div className="details">
-        <h3 className="details-title">{props.gameId}</h3>
-        <div className="details-content">
-          <p>
-            Is it your turn: <strong>{props.isTurn ? "yes" : "no"}</strong>
-          </p>
-          <div className="details-message">
-            <p>message from server:</p>
-            <p> {props.message}</p>
-          </div>
-        </div>
       </div>
     );
   }

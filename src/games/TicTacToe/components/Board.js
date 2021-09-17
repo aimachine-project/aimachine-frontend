@@ -38,7 +38,7 @@ class Board extends React.Component {
       gridTemplateRows: `repeat(${this.props.boardSize}, 1fr)`,
     };
     return (
-      <div className="board bg-blue-900" style={boardStyle}>
+      <div className="board tictactoe-board" style={boardStyle}>
         {this.renderAllFields()}
       </div>
     );
