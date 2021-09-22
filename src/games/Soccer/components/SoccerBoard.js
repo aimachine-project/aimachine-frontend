@@ -8,14 +8,17 @@ function SoccerBoard() {
   const width = (surfaceCols + 1) * fieldLength;
   const height = (surfaceRows + 1) * fieldLength;
   const [ctx, setCtx] = useState();
+  const [offset, setOffset] = useState();
+  const [currentNode, setCurrentNode] = useState({ col: 5, row: 6 });
 
   const boardStyle = { border: "1px solid #000000" };
   useEffect(() => {
     const canvasObj = canvasRef.current;
     const currentctx = canvasObj.getContext("2d");
+
+    setOffset({ x: canvasObj.offsetLeft, y: canvasObj.offsetTop });
     setCtx(currentctx);
     if (ctx) {
-      // const canvasObj = canvasRef.current;
       drawBoard(canvasObj);
     }
   }, [ctx]);
@@ -55,6 +58,11 @@ function SoccerBoard() {
     const cy = (row + 1) * fieldLength;
     return { x: cx, y: cy };
   };
+  const getNodeIndex = (coordinates) => {
+    const colIndex = Math.abs(Math.round(coordinates.x / fieldLength - 1));
+    const rowIndex = Math.abs(Math.round(coordinates.y / fieldLength - 1));
+    return { col: colIndex, row: rowIndex };
+  };
 
   const drawLine = (startNode, stopNode) => {
     ctx.strokeStyle = "#d6cfcf";
@@ -85,9 +93,24 @@ function SoccerBoard() {
     drawLine({ col: 1, row: 11 }, { col: 1, row: 1 });
   };
 
-  // const handleCanvasClick = (event) => {
-  //   console.log("click");
-  // };
+  const handleCanvasClick = (event) => {
+    console.log("click");
+
+    const clickedX = event.clientX - offset.x;
+    const clickedY = event.clientY - offset.y;
+    const clickedCoordinates = { x: clickedX, y: clickedY };
+
+    const clickedNode = getNodeIndex(clickedCoordinates);
+
+    const colDiff = Math.abs(currentNode.col - clickedNode.col);
+    const rowDiff = Math.abs(currentNode.row - clickedNode.row);
+
+    if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
+      drawLine(currentNode, clickedNode);
+      setCurrentNode(clickedNode);
+      console.log(clickedNode);
+    }
+  };
 
   return (
     <div className="board">
@@ -97,7 +120,7 @@ function SoccerBoard() {
         width={width}
         height={height}
         style={boardStyle}
-        // onClick={handleCanvasClick}
+        onClick={handleCanvasClick}
       ></canvas>
     </div>
   );
