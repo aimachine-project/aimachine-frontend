@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function SoccerBoard() {
   const canvasRef = useRef(null);
@@ -7,35 +7,33 @@ function SoccerBoard() {
   const fieldLength = 50;
   const width = (surfaceCols + 1) * fieldLength;
   const height = (surfaceRows + 1) * fieldLength;
+  const [ctx, setCtx] = useState();
 
   const boardStyle = { border: "1px solid #000000" };
   useEffect(() => {
     const canvasObj = canvasRef.current;
-    const ctx = canvasObj.getContext("2d");
-    drawBoard(ctx, canvasObj);
-  }, []);
+    const currentctx = canvasObj.getContext("2d");
+    setCtx(currentctx);
+    if (ctx) {
+      // const canvasObj = canvasRef.current;
+      drawBoard(canvasObj);
+    }
+  }, [ctx]);
 
-  const drawBoard = (ctx, canvas) => {
+  const drawBoard = (canvas) => {
     ctx.fillStyle = "#474799";
     ctx.fillRect(0, 0, width, height);
 
     for (let i = 0; i <= surfaceCols - 1; i++) {
       for (let j = 0; j <= surfaceRows - 1; j++) {
-        drawNode(ctx, i, j);
-        canvas.addEventListener("click", (e) => {
-          // handleCanvasClick(e, cx, cy, i, j);
-          console.log("row: " + i + ", col: " + j);
-        });
+        drawNode(i, j);
       }
     }
 
-    drawBorder(ctx, fieldLength, fieldLength);
-    const node1 = getNodeCoordinates(0, 0);
-    const node2 = getNodeCoordinates(0, 1);
-    drawLine(ctx, node1, node2);
+    drawBorder(fieldLength, fieldLength);
   };
 
-  const drawNode = (ctx, col, row) => {
+  const drawNode = (col, row) => {
     const r = 5;
     const node = getNodeCoordinates(col, row);
 
@@ -58,7 +56,7 @@ function SoccerBoard() {
     return { x: cx, y: cy };
   };
 
-  const drawLine = (ctx, startNode, stopNode) => {
+  const drawLine = (startNode, stopNode) => {
     ctx.strokeStyle = "#d6cfcf";
     ctx.lineWidth = 3;
 
@@ -72,19 +70,19 @@ function SoccerBoard() {
     ctx.stroke();
   };
 
-  const drawBorder = (ctx, colWidth, rowHeight) => {
-    drawLine(ctx, { col: 1, row: 1 }, { col: 4, row: 1 });
-    drawLine(ctx, { col: 4, row: 1 }, { col: 4, row: 0 });
-    drawLine(ctx, { col: 4, row: 0 }, { col: 6, row: 0 });
-    drawLine(ctx, { col: 6, row: 0 }, { col: 6, row: 1 });
-    drawLine(ctx, { col: 6, row: 1 }, { col: 9, row: 1 });
-    drawLine(ctx, { col: 9, row: 1 }, { col: 9, row: 11 });
-    drawLine(ctx, { col: 9, row: 11 }, { col: 6, row: 11 });
-    drawLine(ctx, { col: 6, row: 11 }, { col: 6, row: 12 });
-    drawLine(ctx, { col: 6, row: 12 }, { col: 4, row: 12 });
-    drawLine(ctx, { col: 4, row: 12 }, { col: 4, row: 11 });
-    drawLine(ctx, { col: 4, row: 11 }, { col: 1, row: 11 });
-    drawLine(ctx, { col: 1, row: 11 }, { col: 1, row: 1 });
+  const drawBorder = (colWidth, rowHeight) => {
+    drawLine({ col: 1, row: 1 }, { col: 4, row: 1 });
+    drawLine({ col: 4, row: 1 }, { col: 4, row: 0 });
+    drawLine({ col: 4, row: 0 }, { col: 6, row: 0 });
+    drawLine({ col: 6, row: 0 }, { col: 6, row: 1 });
+    drawLine({ col: 6, row: 1 }, { col: 9, row: 1 });
+    drawLine({ col: 9, row: 1 }, { col: 9, row: 11 });
+    drawLine({ col: 9, row: 11 }, { col: 6, row: 11 });
+    drawLine({ col: 6, row: 11 }, { col: 6, row: 12 });
+    drawLine({ col: 6, row: 12 }, { col: 4, row: 12 });
+    drawLine({ col: 4, row: 12 }, { col: 4, row: 11 });
+    drawLine({ col: 4, row: 11 }, { col: 1, row: 11 });
+    drawLine({ col: 1, row: 11 }, { col: 1, row: 1 });
   };
 
   // const handleCanvasClick = (event) => {
