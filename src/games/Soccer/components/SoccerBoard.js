@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function SoccerBoard() {
+function SoccerBoard(props) {
   const canvasRef = useRef(null);
   const surfaceCols = 11;
   const surfaceRows = 13;
@@ -9,7 +9,6 @@ function SoccerBoard() {
   const height = (surfaceRows + 1) * fieldLength;
   const [ctx, setCtx] = useState();
   const [offset, setOffset] = useState();
-  const [currentNode, setCurrentNode] = useState({ col: 5, row: 6 });
 
   const boardStyle = { border: "1px solid #000000" };
   useEffect(() => {
@@ -22,6 +21,14 @@ function SoccerBoard() {
       drawBoard(canvasObj);
     }
   }, [ctx]);
+
+  useEffect(() => {
+    if (ctx) {
+      drawLine(props.currentNode, props.newNode);
+      console.log(":D");
+      props.setCurrentNode(props.newNode);
+    }
+  }, [props.newNode]);
 
   const drawBoard = (canvas) => {
     ctx.fillStyle = "#474799";
@@ -102,14 +109,16 @@ function SoccerBoard() {
 
     const clickedNode = getNodeIndex(clickedCoordinates);
 
-    const colDiff = Math.abs(currentNode.col - clickedNode.col);
-    const rowDiff = Math.abs(currentNode.row - clickedNode.row);
+    // const colDiff = Math.abs(currentNode.col - clickedNode.col);
+    // const rowDiff = Math.abs(currentNode.row - clickedNode.row);
 
-    if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
-      drawLine(currentNode, clickedNode);
-      setCurrentNode(clickedNode);
-      console.log(clickedNode);
-    }
+    props.chooseNode(clickedNode);
+
+    // if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
+    //   drawLine(currentNode, clickedNode);
+    //   setCurrentNode(clickedNode);
+    //   console.log(clickedNode);
+    // }
   };
 
   return (
