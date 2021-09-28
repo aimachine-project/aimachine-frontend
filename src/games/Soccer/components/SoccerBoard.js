@@ -1,36 +1,61 @@
 import React, { useEffect, useRef, useState } from "react";
 
 function SoccerBoard(props) {
+  const surfaceRef = useRef(null);
   const canvasRef = useRef(null);
   const surfaceCols = 11;
   const surfaceRows = 13;
-  const fieldLength = 50;
-  const width = (surfaceCols + 1) * fieldLength;
-  const height = (surfaceRows + 1) * fieldLength;
-  const [ctx, setCtx] = useState();
-  const [offset, setOffset] = useState();
+  const [fieldLength, setFieldLength] = useState(0);
+  let width = (surfaceCols + 1) * fieldLength;
+  let height = (surfaceRows + 1) * fieldLength;
   const boardStyle = { border: "1px solid #000000" };
 
   useEffect(() => {
+    const surfaceDimentions = getSurfaceDimentions();
+    const optimalFieldLength = getOptimalFieldLength(
+      surfaceDimentions.width,
+      surfaceDimentions.height
+    );
+    setFieldLength(optimalFieldLength);
+
+    width = (surfaceCols + 1) * fieldLength;
+    height = (surfaceRows + 1) * fieldLength;
+  }, [surfaceRef]);
+
+  const getSurfaceDimentions = () => {
+    const width = surfaceRef.current.offsetWidth;
+    const height = surfaceRef.current.offsetHeight;
+    return { width: width, height: height };
+  };
+
+  const getOptimalFieldLength = (surfaceWidth, surfaceHeight) => {
+    const widthFieldLength = surfaceWidth / (surfaceCols + 1);
+    const heightFieldLength = surfaceHeight / (surfaceRows + 1);
+    return Math.min(widthFieldLength, heightFieldLength);
+  };
+
+  const getCanvasCtx = () => {
     const canvasObj = canvasRef.current;
-    const currentctx = canvasObj.getContext("2d");
+    const ctx = canvasObj.getContext("2d");
 
-    setOffset({ x: canvasObj.offsetLeft, y: canvasObj.offsetTop });
-    setCtx(currentctx);
-
-    if (ctx) {
-      drawBoard(canvasObj);
-    }
-  }, [ctx]);
+    return ctx;
+  };
 
   useEffect(() => {
-    if (ctx) {
+    if (fieldLength) {
+      drawBoard();
+    }
+  }, [fieldLength]);
+
+  useEffect(() => {
+    if (props.newNode) {
       drawLine(props.currentNode, props.newNode);
       props.setCurrentNode(props.newNode);
     }
   }, [props.newNode]);
 
-  const drawBoard = (canvas) => {
+  const drawBoard = () => {
+    const ctx = getCanvasCtx();
     ctx.fillStyle = "#474799";
     ctx.fillRect(0, 0, width, height);
 
@@ -46,6 +71,7 @@ function SoccerBoard(props) {
   const drawNode = (col, row) => {
     const r = 5;
     const node = getNodeCoordinates(col, row);
+    const ctx = getCanvasCtx();
 
     ctx.beginPath();
     ctx.arc(node.x, node.y, r, 0, 2 * Math.PI, false);
@@ -73,6 +99,7 @@ function SoccerBoard(props) {
   };
 
   const drawLine = (startNode, stopNode) => {
+    const ctx = getCanvasCtx();
     ctx.strokeStyle = "#d6cfcf";
     ctx.lineWidth = 3;
 
@@ -101,21 +128,24 @@ function SoccerBoard(props) {
     drawLine({ col: 1, row: 11 }, { col: 1, row: 1 });
   };
 
-  const handleCanvasClick = (event) => {
-    console.log("click");
+  const getOffset = () => {
+    const canvasObj = canvasRef.current;
+    return { left: canvasObj.offsetLeft, top: canvasObj.offsetTop };
+  };
 
-    const clickedX = event.clientX - offset.x;
-    const clickedY = event.clientY - offset.y;
+  const handleCanvasClick = (event) => {
+    const offset = getOffset();
+    const clickedX = event.clientX - offset.left;
+    const clickedY = event.clientY - offset.top;
     const clickedCoordinates = { x: clickedX, y: clickedY };
 
     const clickedNode = getNodeIndex(clickedCoordinates);
-    console.log(clickedNode);
 
     props.chooseNode(clickedNode);
   };
 
   return (
-    <div className="board">
+    <div className="board" ref={surfaceRef}>
       <canvas
         ref={canvasRef}
         id="board"
