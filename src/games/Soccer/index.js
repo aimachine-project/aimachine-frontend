@@ -69,6 +69,7 @@ class Soccer extends React.Component {
     const rowDiff = Math.abs(currentNode.row - node.row);
 
     if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
+      console.log("wysyłam!");
       this.state.currentSocket.send(
         JSON.stringify({
           eventType: "field_clicked",

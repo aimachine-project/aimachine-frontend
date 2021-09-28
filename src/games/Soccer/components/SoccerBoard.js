@@ -9,14 +9,15 @@ function SoccerBoard(props) {
   const height = (surfaceRows + 1) * fieldLength;
   const [ctx, setCtx] = useState();
   const [offset, setOffset] = useState();
-
   const boardStyle = { border: "1px solid #000000" };
+
   useEffect(() => {
     const canvasObj = canvasRef.current;
     const currentctx = canvasObj.getContext("2d");
 
     setOffset({ x: canvasObj.offsetLeft, y: canvasObj.offsetTop });
     setCtx(currentctx);
+
     if (ctx) {
       drawBoard(canvasObj);
     }
@@ -25,7 +26,6 @@ function SoccerBoard(props) {
   useEffect(() => {
     if (ctx) {
       drawLine(props.currentNode, props.newNode);
-      console.log(":D");
       props.setCurrentNode(props.newNode);
     }
   }, [props.newNode]);
@@ -65,6 +65,7 @@ function SoccerBoard(props) {
     const cy = (row + 1) * fieldLength;
     return { x: cx, y: cy };
   };
+
   const getNodeIndex = (coordinates) => {
     const colIndex = Math.abs(Math.round(coordinates.x / fieldLength - 1));
     const rowIndex = Math.abs(Math.round(coordinates.y / fieldLength - 1));
@@ -108,17 +109,9 @@ function SoccerBoard(props) {
     const clickedCoordinates = { x: clickedX, y: clickedY };
 
     const clickedNode = getNodeIndex(clickedCoordinates);
-
-    // const colDiff = Math.abs(currentNode.col - clickedNode.col);
-    // const rowDiff = Math.abs(currentNode.row - clickedNode.row);
+    console.log(clickedNode);
 
     props.chooseNode(clickedNode);
-
-    // if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
-    //   drawLine(currentNode, clickedNode);
-    //   setCurrentNode(clickedNode);
-    //   console.log(clickedNode);
-    // }
   };
 
   return (
