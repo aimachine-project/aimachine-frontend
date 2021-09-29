@@ -6,6 +6,7 @@ function SoccerBoard(props) {
   const surfaceCols = 11;
   const surfaceRows = 13;
   const [fieldLength, setFieldLength] = useState(0);
+  // TODO: move width and height to state, but for now it for some reason streches out canvas
   let width = (surfaceCols + 1) * fieldLength;
   let height = (surfaceRows + 1) * fieldLength;
   const boardStyle = { border: "1px solid #000000" };
@@ -46,6 +47,36 @@ function SoccerBoard(props) {
       drawBoard();
     }
   }, [fieldLength]);
+
+  useEffect(() => {
+    console.log("got players");
+    drawPlayersNames(props.players);
+  }, [props.players]);
+
+  const drawPlayersNames = (players) => {
+    drawPlayerName(players.first, 7, 12);
+    drawPlayerName(players.second, 7, 0);
+  };
+
+  const drawPlayerName = (name, col, row) => {
+    const ctx = getCanvasCtx();
+    const fontSize = fieldLength * 0.75;
+    ctx.font = fontSize + "px Arial";
+    const margin = fontSize / 2;
+
+    const textStart = getNodeCoordinates(col, row);
+    const width = ctx.measureText(name).width;
+
+    ctx.fillStyle = "#474799";
+    ctx.fillRect(
+      textStart.x - margin,
+      textStart.y + margin,
+      width + margin * 2,
+      -fontSize - margin
+    );
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(name, textStart.x, textStart.y);
+  };
 
   useEffect(() => {
     if (props.newNode) {

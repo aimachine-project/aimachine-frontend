@@ -9,6 +9,7 @@ class Soccer extends React.Component {
       currentSocket: null,
       gameId: "",
       clientId: "",
+      players: { first: "", second: "" },
       currentPlayer: "",
       message: "",
       currentNode: { col: 5, row: 6 },
@@ -33,6 +34,16 @@ class Soccer extends React.Component {
         }
         case "client_id": {
           client.setState({ clientId: json.eventMessage });
+          console.log(json.eventMessage);
+          break;
+        }
+        case "game_starting": {
+          const data = JSON.parse(json.eventMessage);
+          const player1 =
+            data.player1 === client.state.clientId ? "you" : "opponent";
+          const player2 =
+            data.player2 === client.state.clientId ? "you" : "opponent";
+          client.setState({ players: { first: player1, second: player2 } });
           break;
         }
         // TODO: should it be "field to be marked" or maybe something like "chosen_node". Or something more general like "recent move"
@@ -48,6 +59,7 @@ class Soccer extends React.Component {
         }
         case "server_message": {
           client.setState({ message: json.eventMessage });
+          console.log(json.eventMessage);
           break;
         }
         default: {
@@ -87,6 +99,12 @@ class Soccer extends React.Component {
     this.setState({ newNode: node });
   }
 
+  // setPlayers(data) {
+  //   const player1 = data.player1 === this.state.clientId ? "you" : data.player1;
+  //   const player2 = data.player2 === this.state.clientId ? "you" : data.player2;
+  //   this.setState({ players: { first: player1, second: player2 } });
+  // }
+
   render() {
     const isSocketDisconnected =
       this.state.currentSocket == null ||
@@ -101,11 +119,19 @@ class Soccer extends React.Component {
           isTurn={isTurn}
           message={this.state.message}
         />
+        {/* <button
+          onClick={() =>
+            this.setPlayers({ player1: this.state.clientId, player2: "drugi" })
+          }
+        >
+          set players
+        </button> */}
         <SoccerBoard
           chooseNode={(node) => this.chooseNode(node)}
           currentNode={this.state.currentNode}
           newNode={this.state.newNode}
           setCurrentNode={(node) => this.setState({ currentNode: node })}
+          players={this.state.players}
         />
       </div>
     );
