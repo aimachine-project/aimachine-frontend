@@ -50,6 +50,8 @@ function SoccerBoard(props) {
   useEffect(() => {
     if (props.newNode) {
       drawLine(props.currentNode, props.newNode);
+      drawNode(props.currentNode.col, props.currentNode.row, false);
+      drawNode(props.newNode.col, props.newNode.row, true);
       props.setCurrentNode(props.newNode);
     }
   }, [props.newNode]);
@@ -61,14 +63,16 @@ function SoccerBoard(props) {
 
     for (let i = 0; i <= surfaceCols - 1; i++) {
       for (let j = 0; j <= surfaceRows - 1; j++) {
-        drawNode(i, j);
+        const isActive =
+          i === (surfaceCols - 1) / 2 && j === (surfaceRows - 1) / 2;
+        drawNode(i, j, isActive);
       }
     }
 
     drawBorder(fieldLength, fieldLength);
   };
 
-  const drawNode = (col, row) => {
+  const drawNode = (col, row, isActive) => {
     const r = 5;
     const node = getNodeCoordinates(col, row);
     const ctx = getCanvasCtx();
@@ -78,8 +82,8 @@ function SoccerBoard(props) {
     ctx.closePath();
     ctx.stroke();
 
-    if (col === 5 && row === 6) {
-      ctx.fillStyle = "#FFFFFF";
+    if (isActive) {
+      ctx.fillStyle = "#cc0080";
     } else {
       ctx.fillStyle = "#b0a8a8";
     }
