@@ -73,7 +73,6 @@ class Soccer extends React.Component {
     if (this.state.currentPlayer !== this.state.clientId) {
       return;
     }
-    console.log("chosen!");
 
     const currentNode = this.state.currentNode;
 
@@ -81,7 +80,6 @@ class Soccer extends React.Component {
     const rowDiff = Math.abs(currentNode.row - node.row);
 
     if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
-      console.log("wysyłam!");
       this.state.currentSocket.send(
         JSON.stringify({
           eventType: "field_clicked",
@@ -119,13 +117,6 @@ class Soccer extends React.Component {
           isTurn={isTurn}
           message={this.state.message}
         />
-        {/* <button
-          onClick={() =>
-            this.setPlayers({ player1: this.state.clientId, player2: "drugi" })
-          }
-        >
-          set players
-        </button> */}
         <SoccerBoard
           chooseNode={(node) => this.chooseNode(node)}
           currentNode={this.state.currentNode}
