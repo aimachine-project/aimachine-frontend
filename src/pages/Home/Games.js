@@ -1,6 +1,6 @@
 import React from "react";
 import GameCard from "./GameCard";
-import { GAMES_LIST } from "../../games/GamesList";
+import { GAMES_LIST } from "../../games/utilities/GamesList";
 
 function Games() {
   return (

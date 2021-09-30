@@ -41,6 +41,8 @@
   flex-direction: column;
   align-items: center;
   margin-top: 1em;
+  // pointer-events: visible;
+  cursor: pointer;
 }
 
 .card-button {
@@ -62,4 +64,40 @@
 
 .card-player-info {
   font-size: small;
+}
+
+.card-link-button {
+  display: block;
+  text-decoration: none;
+  margin: 0.5em;
+  padding: 0.5em;
+  background-color: #060b26;
+  color: white;
+}
+
+.popup-wrapper {
+  z-index: 10;
+  background-color: white;
+  position: absolute;
+  left: 10vw;
+  right: 10vw;
+  top: 25vh;
+  bottom: 25vh;
+
+  @media (min-width: 1024px) {
+    left: calc(max(30vw, 250px));
+    right: calc(max(30vw, 250px));
+    top: calc(max(30vh, 250px));
+    bottom: calc(max(30vh, 250px));
+  }
+}
+
+.popup-background {
+  z-index: 5;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }

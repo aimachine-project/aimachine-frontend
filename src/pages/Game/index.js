@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import PageTitle from "../components/PageTitle.js";
-import { GAMES_LIST } from "../../games/GamesList.js";
+import { GAMES_LIST } from "../../games/utilities/GamesList.js";
 
 function Game() {
   const { gameName } = useParams();
