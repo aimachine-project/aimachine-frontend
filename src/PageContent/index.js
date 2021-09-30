@@ -12,7 +12,7 @@ function PageContent(props) {
     <div className="page-content">
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/game">
+        <Route exact path="/games">
           <Redirect to="/" />
         </Route>
         <Route path="/games/:gameName" component={Game} />
