@@ -5,12 +5,12 @@ import TicTacToe from "../TicTacToe";
 
 const protocol = location.protocol.replace("http", "ws");
 const baseWebSocket = protocol + "//" + document.domain + ":8080";
-const baseUrlAi = location.protocol + "//" + document.domain + ":8081";
+const baseAiPath = location.protocol + "//" + document.domain + ":8081";
 export const GAMES_LIST = [
   {
     name: "Tic Tac Toe",
     route: "tictactoe",
-    routeAI: baseUrlAi + "/tictactoe",
+    pathAi: baseAiPath + "/tictactoe",
     socketUrl: baseWebSocket + "/games/tictactoe",
     component: (
       <TicTacToe boardSize="3" socketUrl={baseWebSocket + "/games/tictactoe"} />
@@ -19,7 +19,7 @@ export const GAMES_LIST = [
   {
     name: "Tic Tac Toe Expanded",
     route: "tictactoeexp",
-    routeAI: baseUrlAi + "/tictactoeextended",
+    pathAi: baseAiPath + "/tictactoeextended",
     socketUrl: baseWebSocket + "/games/tictactoenfields",
     component: (
       <TicTacToe
@@ -31,7 +31,7 @@ export const GAMES_LIST = [
   {
     name: "Soccer",
     route: "soccer",
-    routeAI: baseUrlAi + "/soccer",
+    pathAi: baseAiPath + "/soccer",
     socketUrl: baseWebSocket + "/games/soccer",
     component: (
       <Soccer boardSize="14" socketUrl={baseWebSocket + "/games/soccer"} />
