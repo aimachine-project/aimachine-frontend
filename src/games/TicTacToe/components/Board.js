@@ -24,6 +24,7 @@ class Board extends React.Component {
     for (let i = 0; i < this.props.board.length; i++) {
       fields.push(
         <Field
+          key={i}
           value={this.props.board[i]}
           onClick={() => this.props.chooseField(i)}
         />
