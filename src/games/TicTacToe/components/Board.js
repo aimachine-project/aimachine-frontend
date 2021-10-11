@@ -2,47 +2,34 @@ import React from "react";
 import Field from "./Field";
 import "../style.scss";
 
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      xIsNext: true,
-    };
-  }
-
-  renderField(i) {
+function Board(props) {
+  const renderField = (i) => {
     return (
       <Field
-        value={this.props.board[i]}
-        onClick={() => this.props.chooseField(i)}
+        key={i}
+        value={props.board[i]}
+        onClick={() => props.chooseField(i)}
       />
     );
-  }
+  };
 
-  renderAllFields() {
+  const renderAllFields = () => {
     const fields = [];
-    for (let i = 0; i < this.props.board.length; i++) {
-      fields.push(
-        <Field
-          value={this.props.board[i]}
-          onClick={() => this.props.chooseField(i)}
-        />
-      );
+    for (let i = 0; i < props.board.length; i++) {
+      fields.push(renderField(i));
     }
     return fields;
-  }
+  };
 
-  render() {
-    const boardStyle = {
-      gridTemplateColumns: `repeat(${this.props.boardSize}, 1fr)`,
-      gridTemplateRows: `repeat(${this.props.boardSize}, 1fr)`,
-    };
-    return (
-      <div className="board tictactoe-board" style={boardStyle}>
-        {this.renderAllFields()}
-      </div>
-    );
-  }
+  const boardStyle = {
+    gridTemplateColumns: `repeat(${props.boardSize}, 1fr)`,
+    gridTemplateRows: `repeat(${props.boardSize}, 1fr)`,
+  };
+  return (
+    <div className="board tictactoe-board" style={boardStyle}>
+      {renderAllFields()}
+    </div>
+  );
 }
 
 export default Board;

@@ -1,64 +1,58 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import GameDetails from "../utilities/GameDetails";
 import SoccerBoard from "./components/SoccerBoard";
 
-class Soccer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentSocket: null,
-      gameId: "",
-      clientId: "",
-      players: { first: "", second: "" },
-      currentPlayer: "",
-      message: "",
-      currentNode: { col: 5, row: 6 },
-      newNode: null,
-    };
-  }
+function Soccer(props) {
+  // TODO: make more research on useRef vs useState
+  const [gameId, setGameId] = useState("");
+  const clientId = useRef("");
+  const [players, setPlayers] = useState({ first: "", second: "" });
+  const [currentPlayer, setCurrentPlayer] = useState("");
+  const [message, setMessage] = useState("");
+  const [currentNode, setCurrentNode] = useState({ col: 5, row: 6 });
+  const [newNode, setNewNode] = useState(null);
+  const socket = useRef(null);
 
-  componentDidMount() {
-    const socket = connectSocket(this.props.socketUrl, (err, serverMessage) => {
-      this.setState({ message: serverMessage });
+  useEffect(() => {
+    const ws = connectSocket(props.socketUrl, (err, serverMessage) => {
+      setMessage(serverMessage);
       if (err) console.log(err);
     });
-    this.setState({ currentSocket: socket });
-    const client = this;
+    socket.current = ws;
 
-    socket.onmessage = (event) => {
+    socket.current.onmessage = (event) => {
       const json = JSON.parse(event.data);
       switch (json.eventType) {
         case "game_id": {
-          client.setState({ gameId: json.eventMessage });
+          setGameId(json.eventMessage);
           break;
         }
         case "client_id": {
-          client.setState({ clientId: json.eventMessage });
-          console.log(json.eventMessage);
+          clientId.current = json.eventMessage;
           break;
         }
         case "game_starting": {
           const data = JSON.parse(json.eventMessage);
           const player1 =
-            data.player1 === client.state.clientId ? "you" : "opponent";
+            data.player1 === clientId.current ? "you" : "opponent";
           const player2 =
-            data.player2 === client.state.clientId ? "you" : "opponent";
-          client.setState({ players: { first: player1, second: player2 } });
+            data.player2 === clientId.current ? "you" : "opponent";
+          setPlayers({ first: player1, second: player2 });
           break;
         }
         // TODO: should it be "field to be marked" or maybe something like "chosen_node". Or something more general like "recent move"
         case "field_to_be_marked": {
           const data = JSON.parse(json.eventMessage);
           const node = { col: data.colIndex, row: data.rowIndex };
-          client.markLine(node);
+          markLine(node);
           break;
         }
         case "movement_allowed": {
-          client.setState({ currentPlayer: json.eventMessage });
+          setCurrentPlayer(json.eventMessage);
           break;
         }
         case "server_message": {
-          client.setState({ message: json.eventMessage });
+          setMessage(json.eventMessage);
           console.log(json.eventMessage);
           break;
         }
@@ -67,66 +61,54 @@ class Soccer extends React.Component {
         }
       }
     };
-  }
+  }, []);
 
-  chooseNode(node) {
-    if (this.state.currentPlayer !== this.state.clientId) {
+  const chooseNode = (node) => {
+    if (currentPlayer !== clientId.current) {
       return;
     }
-
-    const currentNode = this.state.currentNode;
 
     const colDiff = Math.abs(currentNode.col - node.col);
     const rowDiff = Math.abs(currentNode.row - node.row);
 
     if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
-      this.state.currentSocket.send(
+      socket.current.send(
         JSON.stringify({
           eventType: "field_clicked",
           eventMessage: {
-            gameId: this.state.gameId,
+            gameId: gameId,
             rowIndex: node.row,
             colIndex: node.col,
           },
         })
       );
     }
-  }
+  };
 
-  markLine(node) {
-    this.setState({ newNode: node });
-  }
+  const markLine = (node) => {
+    setNewNode(node);
+  };
 
-  // setPlayers(data) {
-  //   const player1 = data.player1 === this.state.clientId ? "you" : data.player1;
-  //   const player2 = data.player2 === this.state.clientId ? "you" : data.player2;
-  //   this.setState({ players: { first: player1, second: player2 } });
-  // }
+  const isSocketDisconnected =
+    socket.current == null || socket.current.readyState === 0;
 
-  render() {
-    const isSocketDisconnected =
-      this.state.currentSocket == null ||
-      this.state.currentSocket.readyState === 0;
-    const isTurn = this.state.currentPlayer === this.state.clientId;
-
-    return (
-      <div className="game-page-wrapper">
-        <GameDetails
-          isSocketDisconnected={isSocketDisconnected}
-          gameId={this.state.gameId}
-          isTurn={isTurn}
-          message={this.state.message}
-        />
-        <SoccerBoard
-          chooseNode={(node) => this.chooseNode(node)}
-          currentNode={this.state.currentNode}
-          newNode={this.state.newNode}
-          setCurrentNode={(node) => this.setState({ currentNode: node })}
-          players={this.state.players}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="game-page-wrapper">
+      <GameDetails
+        isSocketDisconnected={isSocketDisconnected}
+        gameId={gameId}
+        isTurn={currentPlayer === clientId.current}
+        message={message}
+      />
+      <SoccerBoard
+        chooseNode={(node) => chooseNode(node)}
+        currentNode={currentNode}
+        newNode={newNode}
+        setCurrentNode={(node) => setCurrentNode(node)}
+        players={players}
+      />
+    </div>
+  );
 }
 
 function connectSocket(serverUrl, cb) {
