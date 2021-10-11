@@ -7,11 +7,12 @@ function Soccer(props) {
   const [currentNode, setCurrentNode] = useState({ col: 5, row: 6 });
   const [newNode, setNewNode] = useState(null);
 
-  const makeMove = (node) => {
+  const markMove = (data) => {
+    const node = { col: data.colIndex, row: data.rowIndex };
     setNewNode(node);
   };
 
-  const game = useGame(props.socketUrl, makeMove);
+  const game = useGame(props.socketUrl, markMove);
 
   const chooseNode = (node) => {
     if (game.currentPlayer !== game.clientId) {

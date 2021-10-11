@@ -1,10 +1,8 @@
-// import { useState } from "react";
-
 import { useState, useEffect, useRef } from "react";
 
-export function useGame(socketUrl, makeMove) {
+export function useGame(socketUrl, markMove) {
   const [socket, setSocket] = useState(null);
-  const [gameId, setGameId] = useState(1);
+  const [gameId, setGameId] = useState(null);
   const clientId = useRef("");
   const [players, setPlayers] = useState({ first: "", second: "" });
   const [currentPlayer, setCurrentPlayer] = useState("");
@@ -12,9 +10,7 @@ export function useGame(socketUrl, makeMove) {
 
   useEffect(() => {
     const ws = new WebSocket(socketUrl);
-    ws.onopen = () => {
-      console.log("connect second");
-    };
+    ws.onopen = () => {};
     setSocket(ws);
   }, []);
 
@@ -42,8 +38,8 @@ export function useGame(socketUrl, makeMove) {
         // TODO: should it be "field to be marked" or maybe something like "chosen_node". Or something more general like "recent move"
         case "field_to_be_marked": {
           const data = JSON.parse(json.eventMessage);
-          const node = { col: data.colIndex, row: data.rowIndex };
-          makeMove(node);
+          //   const node = { col: data.colIndex, row: data.rowIndex };
+          markMove(data);
           break;
         }
         case "movement_allowed": {
