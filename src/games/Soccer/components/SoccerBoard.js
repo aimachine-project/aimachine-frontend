@@ -95,7 +95,7 @@ function SoccerBoard(props) {
     for (let i = 0; i <= surfaceCols - 1; i++) {
       for (let j = 0; j <= surfaceRows - 1; j++) {
         const isActive =
-          i === (surfaceCols - 1) / 2 && j === (surfaceRows - 1) / 2;
+          i === props.currentNode.col && j === props.currentNode.row;
         drawNode(i, j, isActive);
       }
     }

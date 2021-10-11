@@ -1,134 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import Board from "./components/Board";
 import GameDetails from "../utilities/GameDetails";
+import { useGame } from "../utilities/GameHooks";
 import "../utilities/style.scss";
 import "./style.scss";
 
-// TO DO: change to env variable
-// const ENDPOINT = process.env.REACT_APP_SOCKET_SERVER_URL;
+function TicTacToe(props) {
+  const [board, setBoard] = useState(
+    Array(Math.pow(props.boardSize, 2)).fill(null)
+  );
 
-class TicTacToe extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentSocket: null,
-      gameId: "",
-      clientId: "",
-      currentPlayer: "",
-      message: "",
-      board: Array(Math.pow(this.props.boardSize, 2)).fill(null),
-    };
-  }
+  const markMove = (data) => {
+    const rowIndex = data.rowIndex;
+    const colIndex = data.colIndex;
+    const index = rowIndex * props.boardSize + colIndex;
+    // TO DO: should data.fieldToken be 1/-1 if the server message at the end is "X/O won"?
+    const token = data.fieldToken === 1 ? "x" : "o";
 
-  componentDidMount() {
-    const socket = connectSocket(this.props.socketUrl, (err, serverMessage) => {
-      this.setState({ message: serverMessage });
-      if (err) console.log(err);
-    });
-    this.setState({ currentSocket: socket });
-    const client = this;
+    const _board = board.slice();
+    _board[index] = token;
 
-    socket.onmessage = (event) => {
-      const json = JSON.parse(event.data);
-      switch (json.eventType) {
-        case "game_id": {
-          client.setState({ gameId: json.eventMessage });
-          break;
-        }
-        case "client_id": {
-          client.setState({ clientId: json.eventMessage });
-          break;
-        }
-        case "field_to_be_marked": {
-          const data = JSON.parse(json.eventMessage);
-          const rowIndex = data.rowIndex;
-          const colIndex = data.colIndex;
-          const index = rowIndex * this.props.boardSize + colIndex;
-          // TO DO: should data.fieldToken be 1/-1 if the server message at the end is "X/O won"?
-          const token = data.fieldToken === 1 ? "x" : "o";
-          client.markField(index, token);
-          break;
-        }
-        case "movement_allowed": {
-          // TO DO: change "movement_allowed" to something more fitting
-          client.setState({ currentPlayer: json.eventMessage });
-          break;
-        }
-        case "server_message": {
-          // TO DO: rethink messages from server to avoid repetition
-          client.setState({ message: json.eventMessage });
-          break;
-        }
-        default: {
-          console.log("message not handled: " + event.data);
-        }
-      }
-    };
-  }
+    setBoard(_board);
+  };
 
-  chooseField(i) {
-    if (
-      this.state.currentPlayer !== this.state.clientId ||
-      this.state.board[i]
-    ) {
+  const game = useGame(props.socketUrl, markMove);
+
+  const chooseField = (i) => {
+    if (game.currentPlayer !== game.clientId || board[i]) {
       return;
     }
-    const row = Math.floor(i / this.props.boardSize);
-    const col = i % this.props.boardSize;
-    this.state.currentSocket.send(
+    const row = Math.floor(i / props.boardSize);
+    const col = i % props.boardSize;
+    game.socket.send(
       JSON.stringify({
         eventType: "field_clicked",
         eventMessage: {
-          gameId: this.state.gameId,
+          gameId: game.gameId,
           rowIndex: row,
           colIndex: col,
         },
       })
     );
-  }
-
-  markField(i, token) {
-    const newBoard = this.state.board.slice();
-    newBoard[i] = token;
-    this.setState({ xIsNext: !this.state.xIsNext });
-    this.setState({ board: newBoard });
-  }
-
-  render() {
-    const isSocketDisconnected =
-      this.state.currentSocket == null ||
-      this.state.currentSocket.readyState === 0;
-    const isTurn = this.state.currentPlayer === this.state.clientId;
-
-    return (
-      <div className="game-page-wrapper">
-        <GameDetails
-          isSocketDisconnected={isSocketDisconnected}
-          gameId={this.state.gameId}
-          isTurn={isTurn}
-          message={this.state.message}
-        />
-        <Board
-          isCurrentPlayer={this.state.currentPlayer === this.state.clientId}
-          board={this.state.board}
-          chooseField={(i) => this.chooseField(i)}
-          boardSize={this.props.boardSize}
-        />
-      </div>
-    );
-  }
-}
-
-function connectSocket(serverUrl, cb) {
-  // const protocol = location.protocol.replace("http", "ws");
-  // const serverUrl = TICTACTOE_URL;
-
-  const socket = new WebSocket(serverUrl);
-  socket.onopen = () => {
-    cb(null, "Connected to server");
   };
 
-  return socket;
+  return (
+    <div className="game-page-wrapper">
+      <GameDetails
+        isSocketDisconnected={
+          game.socket == null || game.socket.readyState === 0
+        }
+        gameId={game.gameId}
+        isTurn={game.currentPlayer === game.clientId}
+        message={game.message}
+      />
+      <Board
+        isCurrentPlayer={game.currentPlayer === game.clientId}
+        board={board}
+        chooseField={(i) => chooseField(i)}
+        boardSize={props.boardSize}
+      />
+    </div>
+  );
 }
 
 export default TicTacToe;
