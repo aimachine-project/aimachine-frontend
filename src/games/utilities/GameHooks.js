@@ -7,6 +7,7 @@ export function useGame(socketUrl, markMove) {
   const [players, setPlayers] = useState({ first: "", second: "" });
   const [currentPlayer, setCurrentPlayer] = useState("");
   const [message, setMessage] = useState("");
+  const [gameState, setGameState] = useState("waiting for game to start");
 
   useEffect(() => {
     const ws = new WebSocket(socketUrl);
@@ -33,6 +34,14 @@ export function useGame(socketUrl, markMove) {
           const player2 =
             data.player2 === clientId.current ? "you" : "opponent";
           setPlayers({ first: player1, second: player2 });
+          break;
+        }
+        case "game_started": {
+          setGameState("game started");
+          break;
+        }
+        case "game_ended": {
+          setGameState(json.eventMessage);
           break;
         }
         case "new_move_to_mark": {
@@ -63,5 +72,6 @@ export function useGame(socketUrl, markMove) {
     players: players,
     currentPlayer: currentPlayer,
     message: message,
+    gameState: gameState,
   };
 }

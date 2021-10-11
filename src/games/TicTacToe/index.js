@@ -51,6 +51,7 @@ function TicTacToe(props) {
         }
         gameId={game.gameId}
         isTurn={game.currentPlayer === game.clientId}
+        gameState={game.gameState}
         message={game.message}
       />
       <Board
