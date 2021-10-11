@@ -6,7 +6,7 @@ export function useGame(socketUrl, markMove) {
   const clientId = useRef("");
   const [players, setPlayers] = useState({ first: "", second: "" });
   const [currentPlayer, setCurrentPlayer] = useState("");
-  const [message, setMessage] = useState("");
+  //   const [message, setMessage] = useState("");
   const [gameState, setGameState] = useState("waiting for game to start");
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export function useGame(socketUrl, markMove) {
           break;
         }
         case "game_ended": {
-          setGameState(json.eventMessage);
+          setGameState("game ended: " + json.eventMessage);
           break;
         }
         case "new_move_to_mark": {
@@ -54,7 +54,7 @@ export function useGame(socketUrl, markMove) {
           break;
         }
         case "server_message": {
-          setMessage(json.eventMessage);
+          //   setMessage(json.eventMessage);
           console.log(json.eventMessage);
           break;
         }
@@ -71,7 +71,7 @@ export function useGame(socketUrl, markMove) {
     clientId: clientId.current,
     players: players,
     currentPlayer: currentPlayer,
-    message: message,
+    // message: message,
     gameState: gameState,
   };
 }
