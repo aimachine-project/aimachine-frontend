@@ -25,7 +25,7 @@ function Soccer(props) {
     if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
       game.socket.send(
         JSON.stringify({
-          eventType: "field_clicked",
+          eventType: "make_move",
           eventMessage: {
             gameId: game.gameId,
             rowIndex: node.row,

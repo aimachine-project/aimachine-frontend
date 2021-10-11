@@ -26,7 +26,7 @@ export function useGame(socketUrl, markMove) {
           clientId.current = json.eventMessage;
           break;
         }
-        case "game_starting": {
+        case "players_in_game": {
           const data = JSON.parse(json.eventMessage);
           const player1 =
             data.player1 === clientId.current ? "you" : "opponent";
@@ -35,14 +35,12 @@ export function useGame(socketUrl, markMove) {
           setPlayers({ first: player1, second: player2 });
           break;
         }
-        // TODO: should it be "field to be marked" or maybe something like "chosen_node". Or something more general like "recent move"
-        case "field_to_be_marked": {
+        case "new_move_to_mark": {
           const data = JSON.parse(json.eventMessage);
-          //   const node = { col: data.colIndex, row: data.rowIndex };
           markMove(data);
           break;
         }
-        case "movement_allowed": {
+        case "current_player": {
           setCurrentPlayer(json.eventMessage);
           break;
         }

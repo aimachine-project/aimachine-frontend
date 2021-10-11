@@ -33,7 +33,7 @@ function TicTacToe(props) {
     const col = i % props.boardSize;
     game.socket.send(
       JSON.stringify({
-        eventType: "field_clicked",
+        eventType: "make_move",
         eventMessage: {
           gameId: game.gameId,
           rowIndex: row,
