@@ -7,7 +7,7 @@ export function useGame(socketUrl, markMove) {
   const [players, setPlayers] = useState({ first: "", second: "" });
   const [currentPlayer, setCurrentPlayer] = useState("");
   //   const [message, setMessage] = useState("");
-  const [gameState, setGameState] = useState("waiting for game to start");
+  const [gameState, setGameState] = useState("waiting for opponent");
 
   useEffect(() => {
     const ws = new WebSocket(socketUrl);
@@ -27,6 +27,10 @@ export function useGame(socketUrl, markMove) {
           clientId.current = json.eventMessage;
           break;
         }
+        case "players_count": {
+          console.log("player count: " + json.eventMessage);
+          break;
+        }
         case "players_in_game": {
           const data = JSON.parse(json.eventMessage);
           const player1 =
@@ -42,6 +46,10 @@ export function useGame(socketUrl, markMove) {
         }
         case "game_ended": {
           setGameState("game ended: " + json.eventMessage);
+          break;
+        }
+        case "game_disbanded": {
+          setGameState("game has been disbanded");
           break;
         }
         case "new_move_to_mark": {
