@@ -12,7 +12,16 @@ export const GAMES_LIST = [
     pathAi: baseAiPath + "/tictactoe",
     socketUrl: baseWebSocket + "/games/tictactoe",
     component: (
-      <TicTacToe boardSize="3" socketUrl={baseWebSocket + "/games/tictactoe"} />
+      <TicTacToe
+        boardSize="3"
+        socketUrl={baseWebSocket + "/games/tictactoe?gameType=HumanVsHuman"}
+      />
+    ),
+    componentAI: (
+      <TicTacToe
+        boardSize="3"
+        socketUrl={baseWebSocket + "/games/tictactoe?gameType=HumanVsAi"}
+      />
     ),
   },
   {
@@ -23,7 +32,15 @@ export const GAMES_LIST = [
     component: (
       <TicTacToe
         boardSize="14"
-        socketUrl={baseWebSocket + "/games/tictactoenfields"}
+        socketUrl={
+          baseWebSocket + "/games/tictactoenfields?gameType=HumanVsHuman"
+        }
+      />
+    ),
+    componentAI: (
+      <TicTacToe
+        boardSize="14"
+        socketUrl={baseWebSocket + "/games/tictactoenfields?gameType=HumanVsAi"}
       />
     ),
   },
@@ -34,15 +51,11 @@ export const GAMES_LIST = [
     socketUrl: baseWebSocket + "/games/soccer",
     component: (
       <Soccer
-        boardSize="14"
         socketUrl={baseWebSocket + "/games/soccer?gameType=HumanVsHuman"}
       />
     ),
     componentAI: (
-      <Soccer
-        boardSize="14"
-        socketUrl={baseWebSocket + "/games/soccer?gameType=HumanVsAi"}
-      />
+      <Soccer socketUrl={baseWebSocket + "/games/soccer?gameType=HumanVsAi"} />
     ),
   },
 ];
