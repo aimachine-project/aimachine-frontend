@@ -10,6 +10,7 @@ function Games() {
           key={index}
           title={game.name}
           route={`/games/${game.route}`}
+          pathAi={game.pathAi}
           players={Math.floor(Math.random() * 50)}
         />
       ))}
