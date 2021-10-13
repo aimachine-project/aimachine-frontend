@@ -17,22 +17,7 @@ function GameCard(props) {
       <a className="card-link-button" href={props.route}>
         with human
       </a>
-      <a
-        className="card-link-button"
-        href={props.route}
-        onClick={() => {
-          fetch(props.pathAi)
-            .then((response) => {
-              return response.json();
-            })
-            .then((data) => {
-              console.log(data);
-            })
-            .catch(function () {
-              console.log("catch in ai call");
-            });
-        }}
-      >
+      <a className="card-link-button" href={props.route + "/ai"}>
         with ai
       </a>
     </>
