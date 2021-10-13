@@ -6,7 +6,6 @@ export function useGame(socketUrl, markMove) {
   const clientId = useRef("");
   const [players, setPlayers] = useState({ first: "", second: "" });
   const [currentPlayer, setCurrentPlayer] = useState("");
-  //   const [message, setMessage] = useState("");
   const [gameState, setGameState] = useState("waiting for opponent");
 
   useEffect(() => {
@@ -62,7 +61,6 @@ export function useGame(socketUrl, markMove) {
           break;
         }
         case "server_message": {
-          //   setMessage(json.eventMessage);
           console.log(json.eventMessage);
           break;
         }
@@ -79,7 +77,6 @@ export function useGame(socketUrl, markMove) {
     clientId: clientId.current,
     players: players,
     currentPlayer: currentPlayer,
-    // message: message,
     gameState: gameState,
   };
 }

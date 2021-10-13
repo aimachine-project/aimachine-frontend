@@ -4,7 +4,6 @@ function GameDetails(props) {
   const isSocketDisconnected = props.isSocketDisconnected;
   const gameId = props.gameId;
   const isTurn = props.isTurn;
-  // const message = props.message;
 
   if (isSocketDisconnected) {
     return (
