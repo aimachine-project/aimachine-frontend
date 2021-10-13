@@ -25,7 +25,7 @@ function Soccer(props) {
     if (colDiff <= 1 && rowDiff <= 1 && colDiff + rowDiff !== 0) {
       game.socket.send(
         JSON.stringify({
-          eventType: "field_clicked",
+          eventType: "make_move",
           eventMessage: {
             gameId: game.gameId,
             rowIndex: node.row,
@@ -44,7 +44,7 @@ function Soccer(props) {
         }
         gameId={game.gameId}
         isTurn={game.currentPlayer === game.clientId}
-        message={game.message}
+        gameState={game.gameState}
       />
       <SoccerBoard
         chooseNode={(node) => chooseNode(node)}
