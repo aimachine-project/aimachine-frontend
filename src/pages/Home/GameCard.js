@@ -17,10 +17,7 @@ function GameCard(props) {
       <a className="card-link-button" href={props.route}>
         with human
       </a>
-      <a
-        className="card-link-button"
-        href={props.routeAI ? props.routeAI : "/"}
-      >
+      <a className="card-link-button" href={props.route + "/ai"}>
         with ai
       </a>
     </>
