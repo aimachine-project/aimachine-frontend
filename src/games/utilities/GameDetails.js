@@ -4,7 +4,6 @@ function GameDetails(props) {
   const isSocketDisconnected = props.isSocketDisconnected;
   const gameId = props.gameId;
   const isTurn = props.isTurn;
-  const message = props.message;
 
   if (isSocketDisconnected) {
     return (
@@ -26,8 +25,7 @@ function GameDetails(props) {
             Is it your turn: <strong>{isTurn ? "yes" : "no"}</strong>
           </p>
           <div className="game-details-message">
-            <p>message from server:</p>
-            <p> {message}</p>
+            <p>{props.gameState}</p>
           </div>
         </div>
       </div>

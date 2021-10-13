@@ -6,7 +6,7 @@ export function useGame(socketUrl, markMove) {
   const clientId = useRef("");
   const [players, setPlayers] = useState({ first: "", second: "" });
   const [currentPlayer, setCurrentPlayer] = useState("");
-  const [message, setMessage] = useState("");
+  const [gameState, setGameState] = useState("waiting for opponent");
 
   useEffect(() => {
     const ws = new WebSocket(socketUrl);
@@ -26,7 +26,11 @@ export function useGame(socketUrl, markMove) {
           clientId.current = json.eventMessage;
           break;
         }
-        case "game_starting": {
+        case "players_count": {
+          console.log("player count: " + json.eventMessage);
+          break;
+        }
+        case "players_in_game": {
           const data = JSON.parse(json.eventMessage);
           const player1 =
             data.player1 === clientId.current ? "you" : "opponent";
@@ -35,19 +39,28 @@ export function useGame(socketUrl, markMove) {
           setPlayers({ first: player1, second: player2 });
           break;
         }
-        // TODO: should it be "field to be marked" or maybe something like "chosen_node". Or something more general like "recent move"
-        case "field_to_be_marked": {
+        case "game_started": {
+          setGameState("game started");
+          break;
+        }
+        case "game_ended": {
+          setGameState("game ended: " + json.eventMessage);
+          break;
+        }
+        case "game_disbanded": {
+          setGameState("game has been disbanded");
+          break;
+        }
+        case "new_move_to_mark": {
           const data = JSON.parse(json.eventMessage);
-          //   const node = { col: data.colIndex, row: data.rowIndex };
           markMove(data);
           break;
         }
-        case "movement_allowed": {
+        case "current_player": {
           setCurrentPlayer(json.eventMessage);
           break;
         }
         case "server_message": {
-          setMessage(json.eventMessage);
           console.log(json.eventMessage);
           break;
         }
@@ -64,6 +77,6 @@ export function useGame(socketUrl, markMove) {
     clientId: clientId.current,
     players: players,
     currentPlayer: currentPlayer,
-    message: message,
+    gameState: gameState,
   };
 }
