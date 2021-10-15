@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS stage
+FROM ubuntu:focal AS stage-frontend
 
 MAINTAINER Agnieszka Kęsik (aga.kesik.dev@gmail.com)
 
@@ -30,7 +30,7 @@ wget -qO - https://nodejs.org/dist/v14.17.0/node-v14.17.0-linux-x64.tar.xz | tar
 
 ENV PATH=/usr/local/lib/nodejs/node-v14.17.0-linux-x64/bin:$PATH
 
-COPY --from=stage build /build
+COPY --from=stage-frontend build /build
 
 RUN npm install --global serve
 
